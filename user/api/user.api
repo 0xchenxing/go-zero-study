@@ -1,0 +1,56 @@
+syntax = "v1"
+
+type (
+	LoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	LoginResp {
+		Token string `json:"token"`
+	}
+	UserInfoReq {
+		Id int64 `path:"id"`
+	}
+	UserInfoResp {
+		Id       int64  `json:"id"`
+		Username string `json:"username"`
+		Email    string `json:"email"`
+	}
+	UserUpdateReq {
+		Id       int64  `path:"id"`
+		Username string `json:"username"`
+		Email    string `json:"email"`
+	}
+	UserUpdateResp {
+		Info string `json:"info"`
+	}
+	SseReq {
+		Body string `json:"body"`
+	}
+	SseResp {
+		Msg string `json:"msg"`
+	}
+)
+
+service user-api {
+	@handler Login
+	post /user/login (LoginReq) returns (LoginResp)
+
+	@handler GetUserInfo
+	get /user/:id (UserInfoReq) returns (UserInfoResp)
+
+	@handler UpdateUserInfo
+	post /user/:id (UserUpdateReq) returns (UserUpdateResp)
+}
+
+@server (
+	sse: true
+)
+service user-api {
+	@handler sse
+	post /sse/with/req (SseReq) returns (SseResp)
+
+	@handler sseresp
+	post /sse/without/resp returns (*SseResp)
+}
+
