@@ -9,7 +9,28 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Token string `json:"token"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+	ExpiresIn    int64  `json:"expiresIn"`
+}
+
+type LogoutResp struct {
+	Success bool   `json:"success"`
+	Message string `json:"message,omitempty"`
+}
+
+type ProfileReq struct {
+	UserId int64 `path:"userId"`
+}
+
+type ProfileResp struct {
+	UserId   int64  `json:"userId"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
+}
+
+type RefreshReq struct {
+	RefreshToken string `json:"refreshToken"`
 }
 
 type SseReq struct {
@@ -18,6 +39,16 @@ type SseReq struct {
 
 type SseResp struct {
 	Msg string `json:"msg"`
+}
+
+type UpdateProfileReq struct {
+	UserId   int64  `path:"userId"`
+	Username string `json:"username"`
+	Role     string `json:"role"`
+}
+
+type UpdateProfileResp struct {
+	Success bool `json:"success"`
 }
 
 type UserInfoReq struct {

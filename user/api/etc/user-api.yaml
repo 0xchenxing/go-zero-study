@@ -22,3 +22,19 @@ UserRpc:
 #    Key: user.rpc
   Endpoints:
     - 127.0.0.1:8080
+
+Auth:
+  AccessSecret: "your-256-bit-secret-key-must-be-32-bytes"
+  AccessExpire: 86400  # 24小时
+  RefreshSecret: "another-random-secret-key-for-refresh"
+  RefreshExpire: 604800  # 7天
+
+# 数据库配置（使用 MySQL）
+DB:
+  DataSource: "root:123456@tcp(127.0.0.1:3306)/user_db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai"
+
+# Redis 配置（用于黑名单）
+Redis:
+  Host: "127.0.0.1:6379"
+  Pass: ""
+  DB: 0

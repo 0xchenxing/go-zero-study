@@ -12,6 +12,7 @@ import (
 	"user/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"github.com/zeromicro/x/errors"
@@ -33,12 +34,16 @@ func main() {
 	httpx.SetErrorHandler(func(err error) (int, any) {
 		switch e := err.(type) {
 		case *errors.CodeMsg:
-			return http.StatusOK, xhttp.BaseResponse[struct{}]{
+			return http.StatusBadRequest, xhttp.BaseResponse[struct{}]{
 				Code: e.Code,
 				Msg:  e.Msg,
 			}
 		default:
-			return http.StatusInternalServerError, nil
+			logx.Error("unhandled error: %+v", err)
+			return http.StatusInternalServerError, xhttp.BaseResponse[struct{}]{
+				Code: 50000,
+				Msg:  "系统繁忙，请稍后重试",
+			}
 		}
 	})
 

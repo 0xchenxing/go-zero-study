@@ -6,6 +6,9 @@ package logic
 import (
 	"context"
 
+	"fmt"
+	"time"
+
 	"user/api/internal/svc"
 	"user/api/internal/types"
 
@@ -27,7 +30,12 @@ func NewSseLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SseLogic {
 }
 
 func (l *SseLogic) Sse(req *types.SseReq, client chan<- *types.SseResp) error {
-	// todo: add your logic here and delete this line
+	for i := 0; i < 5; i++ {
+		client <- &types.SseResp{
+			Msg: fmt.Sprintf("req: %s, message %d", req.Body, i),
+		}
+		time.Sleep(time.Second)
+	}
 
 	return nil
 }

@@ -6,7 +6,32 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResp {
-		Token string `json:"token"`
+		AccessToken  string `json:"accessToken"`
+		RefreshToken string `json:"refreshToken"`
+		ExpiresIn    int64  `json:"expiresIn"`
+	}
+	LogoutResp {
+		Success bool   `json:"success"`
+		Message string `json:"message,omitempty"`
+	}
+	RefreshReq {
+		RefreshToken string `json:"refreshToken"`
+	}
+	ProfileReq {
+		UserId int64 `path:"userId"`
+	}
+	ProfileResp {
+		UserId   int64  `json:"userId"`
+		Username string `json:"username"`
+		Role     string `json:"role"`
+	}
+	UpdateProfileReq {
+		UserId   int64  `path:"userId"`
+		Username string `json:"username"`
+		Role     string `json:"role"`
+	}
+	UpdateProfileResp {
+		Success bool `json:"success"`
 	}
 	UserInfoReq {
 		Id int64 `path:"id"`
@@ -36,6 +61,9 @@ service user-api {
 	@handler Login
 	post /user/login (LoginReq) returns (LoginResp)
 
+	@handler RefreshToken
+	post /user/refresh (RefreshReq) returns (LoginResp)
+
 	@handler GetUserInfo
 	get /user/:id (UserInfoReq) returns (UserInfoResp)
 
@@ -52,5 +80,21 @@ service user-api {
 
 	@handler sseresp
 	post /sse/without/resp returns (*SseResp)
+}
+
+// 受保护接口：jwt: Auth 启用 Token 验证中间件。
+// Auth 对应 YAML 配置文件中的 JWT 配置键。
+@server (
+	jwt: Auth
+)
+service user-api {
+	@handler GetProfile
+	get /user/profile/:userId (ProfileReq) returns (ProfileResp)
+
+	@handler UpdateProfile
+	put /user/profile/:userId (UpdateProfileReq) returns (UpdateProfileResp)
+
+	@handler Logout
+	post /user/logout returns (LogoutResp)
 }
 
