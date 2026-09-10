@@ -51,6 +51,12 @@ type UpdateProfileResp struct {
 	Success bool `json:"success"`
 }
 
+type UploadResp struct {
+	Filename string `json:"filename"`
+	Size     int64  `json:"size"`
+	URL      string `json:"url"`
+}
+
 type UserInfoReq struct {
 	Id int64 `path:"id"`
 }

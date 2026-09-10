@@ -10,10 +10,12 @@ import (
 
 type Config struct {
 	rest.RestConf
-	UserRpc zrpc.RpcClientConf
-	Auth    AuthConfig
-	DB      DBConfig
-	Redis   RedisConfig
+	UserRpc   zrpc.RpcClientConf
+	Auth      AuthConfig
+	DB        DBConfig
+	Redis     RedisConfig
+	UploadDir string `json:",optional"`
+	S3Bucket  string `json:",optional"`
 }
 
 type AuthConfig struct {

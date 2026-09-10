@@ -55,6 +55,11 @@ type (
 	SseResp {
 		Msg string `json:"msg"`
 	}
+	UploadResp {
+		Filename string `json:"filename"`
+		Size     int64  `json:"size"`
+		URL      string `json:"url"`
+	}
 )
 
 service user-api {
@@ -69,6 +74,9 @@ service user-api {
 
 	@handler UpdateUserInfo
 	post /user/:id (UserUpdateReq) returns (UserUpdateResp)
+
+	@handler UploadFile
+	post /upload/file returns (UploadResp)
 }
 
 @server (

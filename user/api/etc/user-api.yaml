@@ -38,3 +38,6 @@ Redis:
   Host: "127.0.0.1:6379"
   Pass: ""
   DB: 0
+
+MaxBytes: 67108864   # 请求体最大 64 MB
+UploadDir: ./uploads
