@@ -93,7 +93,8 @@ service user-api {
 // 受保护接口：jwt: Auth 启用 Token 验证中间件。
 // Auth 对应 YAML 配置文件中的 JWT 配置键。
 @server (
-	jwt: Auth
+	jwt:        Auth
+	middleware: JwtBlacklist
 )
 service user-api {
 	@handler GetProfile

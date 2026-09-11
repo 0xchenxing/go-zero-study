@@ -59,23 +59,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/user/logout",
-				Handler: LogoutHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/user/profile/:userId",
-				Handler: GetProfileHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/user/profile/:userId",
-				Handler: UpdateProfileHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtBlacklist},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/logout",
+					Handler: LogoutHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/user/profile/:userId",
+					Handler: GetProfileHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPut,
+					Path:    "/user/profile/:userId",
+					Handler: UpdateProfileHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }
