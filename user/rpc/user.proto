@@ -11,6 +11,10 @@ message Response {
   string pong = 1;
 }
 
+message SayHelloReq  { string name    = 1; }
+message SayHelloResp { string message = 1; }
+
 service User {
   rpc Ping(Request) returns(Response);
+  rpc SayHello(SayHelloReq) returns(SayHelloResp);
 }

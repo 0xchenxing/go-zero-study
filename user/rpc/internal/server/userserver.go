@@ -27,3 +27,8 @@ func (s *UserServer) Ping(ctx context.Context, in *user.Request) (*user.Response
 	l := logic.NewPingLogic(ctx, s.svcCtx)
 	return l.Ping(in)
 }
+
+func (s *UserServer) SayHello(ctx context.Context, in *user.SayHelloReq) (*user.SayHelloResp, error) {
+	l := logic.NewSayHelloLogic(ctx, s.svcCtx)
+	return l.SayHello(in)
+}

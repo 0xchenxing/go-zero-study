@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_Ping_FullMethodName = "/user.User/Ping"
+	User_Ping_FullMethodName     = "/user.User/Ping"
+	User_SayHello_FullMethodName = "/user.User/SayHello"
 )
 
 // UserClient is the client API for User service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error)
 }
 
 type userClient struct {
@@ -47,11 +49,22 @@ func (c *userClient) Ping(ctx context.Context, in *Request, opts ...grpc.CallOpt
 	return out, nil
 }
 
+func (c *userClient) SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SayHelloResp)
+	err := c.cc.Invoke(ctx, User_SayHello_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
 type UserServer interface {
 	Ping(context.Context, *Request) (*Response, error)
+	SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedUserServer struct{}
 
 func (UnimplementedUserServer) Ping(context.Context, *Request) (*Response, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedUserServer) SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 func (UnimplementedUserServer) testEmbeddedByValue()              {}
@@ -104,6 +120,24 @@ func _User_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SayHelloReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SayHello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_SayHello_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SayHello(ctx, req.(*SayHelloReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _User_Ping_Handler,
+		},
+		{
+			MethodName: "SayHello",
+			Handler:    _User_SayHello_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

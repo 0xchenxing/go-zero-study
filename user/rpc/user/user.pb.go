@@ -109,6 +109,94 @@ func (x *Response) GetPong() string {
 	return ""
 }
 
+type SayHelloReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SayHelloReq) Reset() {
+	*x = SayHelloReq{}
+	mi := &file_user_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SayHelloReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SayHelloReq) ProtoMessage() {}
+
+func (x *SayHelloReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SayHelloReq.ProtoReflect.Descriptor instead.
+func (*SayHelloReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SayHelloReq) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type SayHelloResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SayHelloResp) Reset() {
+	*x = SayHelloResp{}
+	mi := &file_user_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SayHelloResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SayHelloResp) ProtoMessage() {}
+
+func (x *SayHelloResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SayHelloResp.ProtoReflect.Descriptor instead.
+func (*SayHelloResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SayHelloResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -118,9 +206,14 @@ const file_user_proto_rawDesc = "" +
 	"\aRequest\x12\x12\n" +
 	"\x04ping\x18\x01 \x01(\tR\x04ping\"\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04pong\x18\x01 \x01(\tR\x04pong2-\n" +
+	"\x04pong\x18\x01 \x01(\tR\x04pong\"!\n" +
+	"\vSayHelloReq\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"(\n" +
+	"\fSayHelloResp\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2`\n" +
 	"\x04User\x12%\n" +
-	"\x04Ping\x12\r.user.Request\x1a\x0e.user.ResponseB\bZ\x06./userb\x06proto3"
+	"\x04Ping\x12\r.user.Request\x1a\x0e.user.Response\x121\n" +
+	"\bSayHello\x12\x11.user.SayHelloReq\x1a\x12.user.SayHelloRespB\bZ\x06./userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -134,16 +227,20 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_user_proto_goTypes = []any{
-	(*Request)(nil),  // 0: user.Request
-	(*Response)(nil), // 1: user.Response
+	(*Request)(nil),      // 0: user.Request
+	(*Response)(nil),     // 1: user.Response
+	(*SayHelloReq)(nil),  // 2: user.SayHelloReq
+	(*SayHelloResp)(nil), // 3: user.SayHelloResp
 }
 var file_user_proto_depIdxs = []int32{
 	0, // 0: user.User.Ping:input_type -> user.Request
-	1, // 1: user.User.Ping:output_type -> user.Response
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: user.User.SayHello:input_type -> user.SayHelloReq
+	1, // 2: user.User.Ping:output_type -> user.Response
+	3, // 3: user.User.SayHello:output_type -> user.SayHelloResp
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -160,7 +257,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
