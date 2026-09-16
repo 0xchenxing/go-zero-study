@@ -2,7 +2,7 @@
 // versions:
 //  goctl version: 1.10.2
 
-package model
+package mysql
 
 import (
 	"context"

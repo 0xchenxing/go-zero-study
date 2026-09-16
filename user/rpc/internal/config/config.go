@@ -10,4 +10,8 @@ type Config struct {
 	zrpc.RpcServerConf
 	DB         sqlx.SqlConf
 	CacheRedis cache.CacheConf
+	Mongo      struct {
+		Uri      string
+		Database string
+	}
 }
