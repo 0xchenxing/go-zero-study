@@ -5,6 +5,7 @@ import (
 	"user/rpc/model/mongo"
 	"user/rpc/model/mysql"
 
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
@@ -12,6 +13,7 @@ type ServiceContext struct {
 	Config       config.Config
 	UserModel    mysql.UserModel
 	ArticleModel mongo.ArticleModel
+	Redis        *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -20,5 +22,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:       c,
 		UserModel:    mysql.NewUserModel(conn, c.CacheRedis),
 		ArticleModel: mongo.NewArticleModel(c.Mongo.Uri, c.Mongo.Database, "article"),
+		Redis:        redis.MustNewRedis(c.Redis),
 	}
 }

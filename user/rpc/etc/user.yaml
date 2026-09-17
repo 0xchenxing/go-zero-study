@@ -19,3 +19,7 @@ CacheRedis:
 Mongo:
   Uri: "mongodb://127.0.0.1:27017"
   Database: article_db
+Redis:
+  Host: 127.0.0.1:6379
+  Pass: ""
+  Type: node        # node=单机 | cluster=集群
