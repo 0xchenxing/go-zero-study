@@ -14,14 +14,27 @@ import (
 )
 
 type (
-	Request      = user.Request
-	Response     = user.Response
-	SayHelloReq  = user.SayHelloReq
-	SayHelloResp = user.SayHelloResp
+	Article           = user.Article
+	InsertArticleReq  = user.InsertArticleReq
+	InsertArticleResp = user.InsertArticleResp
+	InsertUserReq     = user.InsertUserReq
+	InsertUserResp    = user.InsertUserResp
+	ListArticleReq    = user.ListArticleReq
+	ListArticleResp   = user.ListArticleResp
+	QueryUserReq      = user.QueryUserReq
+	QueryUserResp     = user.QueryUserResp
+	Request           = user.Request
+	Response          = user.Response
+	SayHelloReq       = user.SayHelloReq
+	SayHelloResp      = user.SayHelloResp
 
 	User interface {
 		Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 		SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error)
+		QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error)
+		ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
+		InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
+		InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
 	}
 
 	defaultUser struct {
@@ -43,4 +56,24 @@ func (m *defaultUser) Ping(ctx context.Context, in *Request, opts ...grpc.CallOp
 func (m *defaultUser) SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.SayHello(ctx, in, opts...)
+}
+
+func (m *defaultUser) QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.QueryUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.ListArticle(ctx, in, opts...)
+}
+
+func (m *defaultUser) InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.InsertUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.InsertArticle(ctx, in, opts...)
 }

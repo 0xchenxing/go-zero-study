@@ -19,8 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_Ping_FullMethodName     = "/user.User/Ping"
-	User_SayHello_FullMethodName = "/user.User/SayHello"
+	User_Ping_FullMethodName          = "/user.User/Ping"
+	User_SayHello_FullMethodName      = "/user.User/SayHello"
+	User_QueryUser_FullMethodName     = "/user.User/QueryUser"
+	User_ListArticle_FullMethodName   = "/user.User/ListArticle"
+	User_InsertUser_FullMethodName    = "/user.User/InsertUser"
+	User_InsertArticle_FullMethodName = "/user.User/InsertArticle"
 )
 
 // UserClient is the client API for User service.
@@ -29,6 +33,10 @@ const (
 type UserClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 	SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error)
+	QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error)
+	ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
+	InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
+	InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
 }
 
 type userClient struct {
@@ -59,12 +67,56 @@ func (c *userClient) SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc
 	return out, nil
 }
 
+func (c *userClient) QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(QueryUserResp)
+	err := c.cc.Invoke(ctx, User_QueryUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListArticleResp)
+	err := c.cc.Invoke(ctx, User_ListArticle_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InsertUserResp)
+	err := c.cc.Invoke(ctx, User_InsertUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InsertArticleResp)
+	err := c.cc.Invoke(ctx, User_InsertArticle_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
 type UserServer interface {
 	Ping(context.Context, *Request) (*Response, error)
 	SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error)
+	QueryUser(context.Context, *QueryUserReq) (*QueryUserResp, error)
+	ListArticle(context.Context, *ListArticleReq) (*ListArticleResp, error)
+	InsertUser(context.Context, *InsertUserReq) (*InsertUserResp, error)
+	InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -80,6 +132,18 @@ func (UnimplementedUserServer) Ping(context.Context, *Request) (*Response, error
 }
 func (UnimplementedUserServer) SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method SayHello not implemented")
+}
+func (UnimplementedUserServer) QueryUser(context.Context, *QueryUserReq) (*QueryUserResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method QueryUser not implemented")
+}
+func (UnimplementedUserServer) ListArticle(context.Context, *ListArticleReq) (*ListArticleResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListArticle not implemented")
+}
+func (UnimplementedUserServer) InsertUser(context.Context, *InsertUserReq) (*InsertUserResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method InsertUser not implemented")
+}
+func (UnimplementedUserServer) InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method InsertArticle not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 func (UnimplementedUserServer) testEmbeddedByValue()              {}
@@ -138,6 +202,78 @@ func _User_SayHello_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_QueryUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).QueryUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_QueryUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).QueryUser(ctx, req.(*QueryUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_ListArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListArticleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ListArticle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_ListArticle_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ListArticle(ctx, req.(*ListArticleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_InsertUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).InsertUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_InsertUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).InsertUser(ctx, req.(*InsertUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_InsertArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertArticleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).InsertArticle(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_InsertArticle_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).InsertArticle(ctx, req.(*InsertArticleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +288,22 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHello",
 			Handler:    _User_SayHello_Handler,
+		},
+		{
+			MethodName: "QueryUser",
+			Handler:    _User_QueryUser_Handler,
+		},
+		{
+			MethodName: "ListArticle",
+			Handler:    _User_ListArticle_Handler,
+		},
+		{
+			MethodName: "InsertUser",
+			Handler:    _User_InsertUser_Handler,
+		},
+		{
+			MethodName: "InsertArticle",
+			Handler:    _User_InsertArticle_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

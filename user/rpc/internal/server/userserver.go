@@ -32,3 +32,23 @@ func (s *UserServer) SayHello(ctx context.Context, in *user.SayHelloReq) (*user.
 	l := logic.NewSayHelloLogic(ctx, s.svcCtx)
 	return l.SayHello(in)
 }
+
+func (s *UserServer) QueryUser(ctx context.Context, in *user.QueryUserReq) (*user.QueryUserResp, error) {
+	l := logic.NewQueryUserLogic(ctx, s.svcCtx)
+	return l.QueryUser(in)
+}
+
+func (s *UserServer) ListArticle(ctx context.Context, in *user.ListArticleReq) (*user.ListArticleResp, error) {
+	l := logic.NewListArticleLogic(ctx, s.svcCtx)
+	return l.ListArticle(in)
+}
+
+func (s *UserServer) InsertUser(ctx context.Context, in *user.InsertUserReq) (*user.InsertUserResp, error) {
+	l := logic.NewInsertUserLogic(ctx, s.svcCtx)
+	return l.InsertUser(in)
+}
+
+func (s *UserServer) InsertArticle(ctx context.Context, in *user.InsertArticleReq) (*user.InsertArticleResp, error) {
+	l := logic.NewInsertArticleLogic(ctx, s.svcCtx)
+	return l.InsertArticle(in)
+}

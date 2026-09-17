@@ -19,6 +19,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:       c,
 		UserModel:    mysql.NewUserModel(conn, c.CacheRedis),
-		ArticleModel: mongo.NewArticleModel(c.Mongo.Uri, c.Mongo.Database, "user"),
+		ArticleModel: mongo.NewArticleModel(c.Mongo.Uri, c.Mongo.Database, "article"),
 	}
 }
