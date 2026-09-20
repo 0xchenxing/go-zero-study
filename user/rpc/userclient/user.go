@@ -21,6 +21,8 @@ type (
 	InsertUserResp    = user.InsertUserResp
 	ListArticleReq    = user.ListArticleReq
 	ListArticleResp   = user.ListArticleResp
+	PusherReq         = user.PusherReq
+	PusherResp        = user.PusherResp
 	QueryUserReq      = user.QueryUserReq
 	QueryUserResp     = user.QueryUserResp
 	Request           = user.Request
@@ -35,6 +37,7 @@ type (
 		ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
 		InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
 		InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
+		Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
 	}
 
 	defaultUser struct {
@@ -76,4 +79,9 @@ func (m *defaultUser) InsertUser(ctx context.Context, in *InsertUserReq, opts ..
 func (m *defaultUser) InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.InsertArticle(ctx, in, opts...)
+}
+
+func (m *defaultUser) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.Pusher(ctx, in, opts...)
 }

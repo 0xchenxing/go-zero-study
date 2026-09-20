@@ -52,3 +52,8 @@ func (s *UserServer) InsertArticle(ctx context.Context, in *user.InsertArticleRe
 	l := logic.NewInsertArticleLogic(ctx, s.svcCtx)
 	return l.InsertArticle(in)
 }
+
+func (s *UserServer) Pusher(ctx context.Context, in *user.PusherReq) (*user.PusherResp, error) {
+	l := logic.NewPusherLogic(ctx, s.svcCtx)
+	return l.Pusher(in)
+}

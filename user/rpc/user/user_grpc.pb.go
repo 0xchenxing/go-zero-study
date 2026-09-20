@@ -25,6 +25,7 @@ const (
 	User_ListArticle_FullMethodName   = "/user.User/ListArticle"
 	User_InsertUser_FullMethodName    = "/user.User/InsertUser"
 	User_InsertArticle_FullMethodName = "/user.User/InsertArticle"
+	User_Pusher_FullMethodName        = "/user.User/Pusher"
 )
 
 // UserClient is the client API for User service.
@@ -37,6 +38,7 @@ type UserClient interface {
 	ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
 	InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
 	InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
+	Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
 }
 
 type userClient struct {
@@ -107,6 +109,16 @@ func (c *userClient) InsertArticle(ctx context.Context, in *InsertArticleReq, op
 	return out, nil
 }
 
+func (c *userClient) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PusherResp)
+	err := c.cc.Invoke(ctx, User_Pusher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
@@ -117,6 +129,7 @@ type UserServer interface {
 	ListArticle(context.Context, *ListArticleReq) (*ListArticleResp, error)
 	InsertUser(context.Context, *InsertUserReq) (*InsertUserResp, error)
 	InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error)
+	Pusher(context.Context, *PusherReq) (*PusherResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -144,6 +157,9 @@ func (UnimplementedUserServer) InsertUser(context.Context, *InsertUserReq) (*Ins
 }
 func (UnimplementedUserServer) InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method InsertArticle not implemented")
+}
+func (UnimplementedUserServer) Pusher(context.Context, *PusherReq) (*PusherResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method Pusher not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 func (UnimplementedUserServer) testEmbeddedByValue()              {}
@@ -274,6 +290,24 @@ func _User_InsertArticle_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_Pusher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PusherReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Pusher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Pusher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Pusher(ctx, req.(*PusherReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +338,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InsertArticle",
 			Handler:    _User_InsertArticle_Handler,
+		},
+		{
+			MethodName: "Pusher",
+			Handler:    _User_Pusher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

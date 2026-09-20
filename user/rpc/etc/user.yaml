@@ -19,7 +19,20 @@ CacheRedis:
 Mongo:
   Uri: "mongodb://127.0.0.1:27017"
   Database: article_db
-Redis:
+UserRedis:
   Host: 127.0.0.1:6379
   Pass: ""
   Type: node        # node=单机 | cluster=集群
+KqPusherConf:
+  Brokers:
+    - 127.0.0.1:29092
+  Topic: payment-success
+KqConsumerConf:
+  Name: kqConsumer
+  Brokers:
+    - 127.0.0.1:29092
+  Group: kqConsumer
+  Topic: payment-success
+  Offset: first
+  Consumers: 8
+  Processors: 8

@@ -657,6 +657,78 @@ func (x *InsertArticleResp) GetId() string {
 	return ""
 }
 
+type PusherReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PusherReq) Reset() {
+	*x = PusherReq{}
+	mi := &file_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PusherReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PusherReq) ProtoMessage() {}
+
+func (x *PusherReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PusherReq.ProtoReflect.Descriptor instead.
+func (*PusherReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{13}
+}
+
+type PusherResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PusherResp) Reset() {
+	*x = PusherResp{}
+	mi := &file_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PusherResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PusherResp) ProtoMessage() {}
+
+func (x *PusherResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PusherResp.ProtoReflect.Descriptor instead.
+func (*PusherResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{14}
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -696,7 +768,10 @@ const file_user_proto_rawDesc = "" +
 	"\acontent\x18\x02 \x01(\tR\acontent\x12\x1c\n" +
 	"\tpublished\x18\x03 \x01(\bR\tpublished\"#\n" +
 	"\x11InsertArticleResp\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id2\xcd\x02\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\v\n" +
+	"\tPusherReq\"\f\n" +
+	"\n" +
+	"PusherResp2\xfa\x02\n" +
 	"\x04User\x12%\n" +
 	"\x04Ping\x12\r.user.Request\x1a\x0e.user.Response\x121\n" +
 	"\bSayHello\x12\x11.user.SayHelloReq\x1a\x12.user.SayHelloResp\x124\n" +
@@ -704,7 +779,8 @@ const file_user_proto_rawDesc = "" +
 	"\vListArticle\x12\x14.user.ListArticleReq\x1a\x15.user.ListArticleResp\x127\n" +
 	"\n" +
 	"InsertUser\x12\x13.user.InsertUserReq\x1a\x14.user.InsertUserResp\x12@\n" +
-	"\rInsertArticle\x12\x16.user.InsertArticleReq\x1a\x17.user.InsertArticleRespB\bZ\x06./userb\x06proto3"
+	"\rInsertArticle\x12\x16.user.InsertArticleReq\x1a\x17.user.InsertArticleResp\x12+\n" +
+	"\x06Pusher\x12\x0f.user.PusherReq\x1a\x10.user.PusherRespB\bZ\x06./userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -718,7 +794,7 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_user_proto_goTypes = []any{
 	(*Request)(nil),           // 0: user.Request
 	(*Response)(nil),          // 1: user.Response
@@ -733,6 +809,8 @@ var file_user_proto_goTypes = []any{
 	(*InsertUserResp)(nil),    // 10: user.InsertUserResp
 	(*InsertArticleReq)(nil),  // 11: user.InsertArticleReq
 	(*InsertArticleResp)(nil), // 12: user.InsertArticleResp
+	(*PusherReq)(nil),         // 13: user.PusherReq
+	(*PusherResp)(nil),        // 14: user.PusherResp
 }
 var file_user_proto_depIdxs = []int32{
 	8,  // 0: user.ListArticleResp.articles:type_name -> user.Article
@@ -742,14 +820,16 @@ var file_user_proto_depIdxs = []int32{
 	6,  // 4: user.User.ListArticle:input_type -> user.ListArticleReq
 	9,  // 5: user.User.InsertUser:input_type -> user.InsertUserReq
 	11, // 6: user.User.InsertArticle:input_type -> user.InsertArticleReq
-	1,  // 7: user.User.Ping:output_type -> user.Response
-	3,  // 8: user.User.SayHello:output_type -> user.SayHelloResp
-	5,  // 9: user.User.QueryUser:output_type -> user.QueryUserResp
-	7,  // 10: user.User.ListArticle:output_type -> user.ListArticleResp
-	10, // 11: user.User.InsertUser:output_type -> user.InsertUserResp
-	12, // 12: user.User.InsertArticle:output_type -> user.InsertArticleResp
-	7,  // [7:13] is the sub-list for method output_type
-	1,  // [1:7] is the sub-list for method input_type
+	13, // 7: user.User.Pusher:input_type -> user.PusherReq
+	1,  // 8: user.User.Ping:output_type -> user.Response
+	3,  // 9: user.User.SayHello:output_type -> user.SayHelloResp
+	5,  // 10: user.User.QueryUser:output_type -> user.QueryUserResp
+	7,  // 11: user.User.ListArticle:output_type -> user.ListArticleResp
+	10, // 12: user.User.InsertUser:output_type -> user.InsertUserResp
+	12, // 13: user.User.InsertArticle:output_type -> user.InsertArticleResp
+	14, // 14: user.User.Pusher:output_type -> user.PusherResp
+	8,  // [8:15] is the sub-list for method output_type
+	1,  // [1:8] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
 	1,  // [1:1] is the sub-list for extension extendee
 	0,  // [0:1] is the sub-list for field type_name
@@ -766,7 +846,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

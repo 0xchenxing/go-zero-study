@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package user;
-option go_package="./user";
+option go_package = "./user";
 
 message Request {
   string ping = 1;
@@ -11,38 +11,41 @@ message Response {
   string pong = 1;
 }
 
-message SayHelloReq  { string name    = 1; }
-message SayHelloResp { string message = 1; }
+message SayHelloReq  {string name = 1;}
+message SayHelloResp {string message = 1;}
 
-message QueryUserReq  { int64 id = 1; }
+message QueryUserReq  {int64 id = 1;}
 message QueryUserResp {
-  int64  id       = 1;
+  int64  id = 1;
   string username = 2;
-  string mobile   = 3;
+  string mobile = 3;
 }
 
 message ListArticleReq  {}
-message ListArticleResp { repeated Article articles = 1; }
+message ListArticleResp {repeated Article articles = 1;}
 message Article {
-  string id       = 1;
-  string title    = 2;
-  string content  = 3;
-  bool   published= 4;
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  bool   published = 4;
 }
 
 message InsertUserReq {
   string username = 1;
   string password = 2;
-  string mobile   = 3;
+  string mobile = 3;
 }
-message InsertUserResp { int64 id = 1; }
+message InsertUserResp {int64 id = 1;}
 
 message InsertArticleReq {
-  string title     = 1;
-  string content   = 2;
+  string title = 1;
+  string content = 2;
   bool   published = 3;
 }
-message InsertArticleResp { string id = 1; }
+message InsertArticleResp {string id = 1;}
+
+message PusherReq {}
+message PusherResp {}
 
 service User {
   rpc Ping(Request) returns(Response);
@@ -51,4 +54,5 @@ service User {
   rpc ListArticle(ListArticleReq) returns(ListArticleResp); // MongoDB
   rpc InsertUser(InsertUserReq) returns(InsertUserResp);    // MySQL
   rpc InsertArticle(InsertArticleReq) returns(InsertArticleResp); // MongoDB
+  rpc Pusher(PusherReq) returns(PusherResp);  // Kafka
 }

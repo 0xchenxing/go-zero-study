@@ -4,6 +4,9 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"user/rpc/internal/mqs"
+
+	"github.com/zeromicro/go-zero/core/service"
 
 	"user/rpc/internal/config"
 	"user/rpc/internal/server"
@@ -12,7 +15,6 @@ import (
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -39,10 +41,21 @@ func main() {
 	})
 	defer s.Stop()
 
+	// 启动消费者服务组
+	serviceGroup := service.NewServiceGroup()
+	defer serviceGroup.Stop()
+	for _, mq := range mqs.Consumers(c, context.Background(), ctx) {
+		serviceGroup.Add(mq)
+	}
+
 	s.AddUnaryInterceptors(authInterceptor)
 	s.AddStreamInterceptors(loggingStreamInterceptor)
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
+
+	// 在后台启动消费者
+	go serviceGroup.Start()
+
 	s.Start()
 }
 
