@@ -44,7 +44,6 @@ type SseResp struct {
 type UpdateProfileReq struct {
 	UserId   int64  `path:"userId"`
 	Username string `json:"username"`
-	Role     string `json:"role"`
 }
 
 type UpdateProfileResp struct {

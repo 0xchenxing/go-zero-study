@@ -4,33 +4,34 @@
 package svc
 
 import (
+	"context"
 	"user/api/internal/config"
 	"user/api/internal/middleware"
-	"user/api/model"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/stores/redis"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type ServiceContext struct {
 	Config       config.Config
 	UserRpc      userclient.User
-	UserModel    model.UserModel
 	Redis        *redis.Redis
 	JwtBlacklist rest.Middleware
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	conn := sqlx.NewMysql(c.DB.DataSource)
 	r := redis.New(c.Redis.Host, redis.WithPass(c.Redis.Pass))
 	return &ServiceContext{
 		Config:       c,
 		UserRpc:      userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
-		UserModel:    model.NewUserModel(conn),
 		Redis:        r,
 		JwtBlacklist: middleware.NewJwtBlacklistMiddleware(r).Handle,
 	}
+}
+
+func (s *ServiceContext) RpcContext(ctx context.Context) context.Context {
+	return metadata.AppendToOutgoingContext(ctx, "token", "internal")
 }

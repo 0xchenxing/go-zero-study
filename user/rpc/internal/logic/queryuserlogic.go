@@ -7,6 +7,9 @@ import (
 	"user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 )
 
 type QueryUserLogic struct {
@@ -24,9 +27,18 @@ func NewQueryUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QueryUs
 }
 
 func (l *QueryUserLogic) QueryUser(in *user.QueryUserReq) (*user.QueryUserResp, error) {
-	u, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
-	if err != nil {
-		return nil, err
+	if in.GetId() <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "用户 ID 无效")
 	}
-	return &user.QueryUserResp{Id: u.Id, Username: u.Username, Mobile: u.Mobile}, nil
+
+	item, err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).
+		Where(l.svcCtx.PostgresQuery.User.ID.Eq(in.GetId())).First()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, status.Error(codes.NotFound, "用户不存在")
+		}
+		return nil, status.Error(codes.Internal, "查询用户失败")
+	}
+
+	return &user.QueryUserResp{Id: item.ID, Username: item.Username, Email: item.Email, Role: item.Role}, nil
 }

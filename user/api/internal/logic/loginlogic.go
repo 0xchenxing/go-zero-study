@@ -5,13 +5,14 @@ package logic
 
 import (
 	"context"
-	"time"
-	"user/api/internal/svc"
-	"user/api/internal/types"
-
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/x/errors"
+	"golang.org/x/crypto/bcrypt"
+	"time"
+	"user/api/internal/svc"
+	"user/api/internal/types"
+	"user/rpc/userclient"
 )
 
 type LoginLogic struct {
@@ -29,25 +30,16 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
-	// 查找用户
-	user, err := l.svcCtx.UserModel.FindOneByUsername(l.ctx, req.Username)
-	if err != nil || user == nil {
+	rpcUser, err := l.svcCtx.UserRpc.AuthenticateUser(l.svcCtx.RpcContext(l.ctx), &userclient.AuthenticateUserReq{Username: req.Username})
+	if err != nil || bcrypt.CompareHashAndPassword([]byte(rpcUser.GetPassword()), []byte(req.Password)) != nil {
 		return nil, errors.New(422, "用户名或密码错误")
 	}
 
-	// 验证密码（实际使用 bcrypt）
-	if req.Password != user.Password {
-		return nil, errors.New(422, "用户名或密码错误")
-	}
-
-	// 生成 Access Token
-	accessToken, err := generateAccessToken(l.svcCtx.Config.Auth.AccessSecret, user.ID, user.Role)
+	accessToken, err := generateAccessToken(l.svcCtx.Config.Auth.AccessSecret, rpcUser.GetId(), rpcUser.GetRole())
 	if err != nil {
 		return nil, errors.New(422, "生成 token 失败")
 	}
-
-	// 生成 Refresh Token
-	refreshToken, _ := generateRefreshToken(l.svcCtx.Config.Auth.RefreshSecret, l.svcCtx.Config.Auth.RefreshExpire, user.ID)
+	refreshToken, err := generateRefreshToken(l.svcCtx.Config.Auth.RefreshSecret, l.svcCtx.Config.Auth.RefreshExpire, rpcUser.GetId())
 	if err != nil {
 		return nil, errors.New(422, "生成 refresh token 失败")
 	}

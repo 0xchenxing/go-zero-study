@@ -30,7 +30,11 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	ctx := svc.NewServiceContext(c)
+	ctx, err := svc.NewServiceContext(c)
+	if err != nil {
+		logx.Errorf("create service context failed: %v", err)
+		return
+	}
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		user.RegisterUserServer(grpcServer, server.NewUserServer(ctx))
@@ -48,7 +52,7 @@ func main() {
 		serviceGroup.Add(mq)
 	}
 
-	s.AddUnaryInterceptors(authInterceptor)
+	//s.AddUnaryInterceptors(authInterceptor)
 	s.AddStreamInterceptors(loggingStreamInterceptor)
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

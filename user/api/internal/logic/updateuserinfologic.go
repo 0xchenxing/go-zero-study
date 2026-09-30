@@ -7,8 +7,10 @@ import (
 	"context"
 	"user/api/internal/svc"
 	"user/api/internal/types"
+	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/x/errors"
 )
 
 type UpdateUserInfoLogic struct {
@@ -26,8 +28,22 @@ func NewUpdateUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Up
 }
 
 func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UserUpdateReq) (resp *types.UserUpdateResp, err error) {
-	//真实要去数据库改
-	return &types.UserUpdateResp{
-		Info: "success",
-	}, nil
+	role, ok := l.ctx.Value("role").(string)
+	if !ok || role != "admin" {
+		return nil, errors.New(403, "无权访问")
+	}
+
+	_, err = l.svcCtx.UserRpc.UpdateUser(
+		l.svcCtx.RpcContext(l.ctx),
+		&userclient.UpdateUserReq{
+			Id:       req.Id,
+			Username: req.Username,
+			Email:    req.Email,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.UserUpdateResp{Info: "success"}, nil
 }

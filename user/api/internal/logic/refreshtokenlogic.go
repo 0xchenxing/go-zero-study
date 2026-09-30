@@ -8,6 +8,7 @@ import (
 
 	"user/api/internal/svc"
 	"user/api/internal/types"
+	"user/rpc/userclient"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -39,11 +40,24 @@ func (l *RefreshTokenLogic) RefreshToken(req *types.RefreshReq) (*types.LoginRes
 	claims := token.Claims.(jwt.MapClaims)
 	userId := int64(claims["userId"].(float64))
 
-	user, _ := l.svcCtx.UserModel.FindOne(l.ctx, userId)
-	newAccess, _ := generateAccessToken(
-		l.svcCtx.Config.Auth.AccessSecret, userId, user.Role)
-	newRefresh, _ := generateRefreshToken(
+	rpcUser, err := l.svcCtx.UserRpc.QueryUser(
+		l.svcCtx.RpcContext(l.ctx),
+		&userclient.QueryUserReq{Id: userId},
+	)
+	if err != nil {
+		return nil, errors.New(401, "用户不存在")
+	}
+
+	newAccess, err := generateAccessToken(
+		l.svcCtx.Config.Auth.AccessSecret, userId, rpcUser.GetRole())
+	if err != nil {
+		return nil, errors.New(401, "生成 token 失败")
+	}
+	newRefresh, err := generateRefreshToken(
 		l.svcCtx.Config.Auth.RefreshSecret, l.svcCtx.Config.Auth.RefreshExpire, userId)
+	if err != nil {
+		return nil, errors.New(401, "生成 refresh token 失败")
+	}
 
 	return &types.LoginResp{
 		AccessToken:  newAccess,

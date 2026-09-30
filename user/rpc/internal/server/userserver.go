@@ -23,24 +23,14 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) Ping(ctx context.Context, in *user.Request) (*user.Response, error) {
-	l := logic.NewPingLogic(ctx, s.svcCtx)
-	return l.Ping(in)
-}
-
-func (s *UserServer) SayHello(ctx context.Context, in *user.SayHelloReq) (*user.SayHelloResp, error) {
-	l := logic.NewSayHelloLogic(ctx, s.svcCtx)
-	return l.SayHello(in)
-}
-
 func (s *UserServer) QueryUser(ctx context.Context, in *user.QueryUserReq) (*user.QueryUserResp, error) {
 	l := logic.NewQueryUserLogic(ctx, s.svcCtx)
 	return l.QueryUser(in)
 }
 
-func (s *UserServer) ListArticle(ctx context.Context, in *user.ListArticleReq) (*user.ListArticleResp, error) {
-	l := logic.NewListArticleLogic(ctx, s.svcCtx)
-	return l.ListArticle(in)
+func (s *UserServer) AuthenticateUser(ctx context.Context, in *user.AuthenticateUserReq) (*user.AuthenticateUserResp, error) {
+	l := logic.NewAuthenticateUserLogic(ctx, s.svcCtx)
+	return l.AuthenticateUser(in)
 }
 
 func (s *UserServer) InsertUser(ctx context.Context, in *user.InsertUserReq) (*user.InsertUserResp, error) {
@@ -48,9 +38,14 @@ func (s *UserServer) InsertUser(ctx context.Context, in *user.InsertUserReq) (*u
 	return l.InsertUser(in)
 }
 
-func (s *UserServer) InsertArticle(ctx context.Context, in *user.InsertArticleReq) (*user.InsertArticleResp, error) {
-	l := logic.NewInsertArticleLogic(ctx, s.svcCtx)
-	return l.InsertArticle(in)
+func (s *UserServer) UpdateUser(ctx context.Context, in *user.UpdateUserReq) (*user.UpdateUserResp, error) {
+	l := logic.NewUpdateUserLogic(ctx, s.svcCtx)
+	return l.UpdateUser(in)
+}
+
+func (s *UserServer) DeleteUser(ctx context.Context, in *user.DeleteUserReq) (*user.DeleteUserResp, error) {
+	l := logic.NewDeleteUserLogic(ctx, s.svcCtx)
+	return l.DeleteUser(in)
 }
 
 func (s *UserServer) Pusher(ctx context.Context, in *user.PusherReq) (*user.PusherResp, error) {

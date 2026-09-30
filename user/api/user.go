@@ -39,7 +39,7 @@ func main() {
 				Msg:  e.Msg,
 			}
 		default:
-			logx.Error("unhandled error: %+v", err)
+			logx.Errorf("unhandled error: %+v", err)
 			return http.StatusInternalServerError, xhttp.BaseResponse[struct{}]{
 				Code: 50000,
 				Msg:  "系统繁忙，请稍后重试",

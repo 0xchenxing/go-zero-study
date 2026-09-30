@@ -21,182 +21,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Request struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ping          string                 `protobuf:"bytes,1,opt,name=ping,proto3" json:"ping,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Request) Reset() {
-	*x = Request{}
-	mi := &file_user_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Request) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Request) ProtoMessage() {}
-
-func (x *Request) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Request.ProtoReflect.Descriptor instead.
-func (*Request) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *Request) GetPing() string {
-	if x != nil {
-		return x.Ping
-	}
-	return ""
-}
-
-type Response struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Pong          string                 `protobuf:"bytes,1,opt,name=pong,proto3" json:"pong,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Response) Reset() {
-	*x = Response{}
-	mi := &file_user_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Response) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Response) ProtoMessage() {}
-
-func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Response.ProtoReflect.Descriptor instead.
-func (*Response) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Response) GetPong() string {
-	if x != nil {
-		return x.Pong
-	}
-	return ""
-}
-
-type SayHelloReq struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SayHelloReq) Reset() {
-	*x = SayHelloReq{}
-	mi := &file_user_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SayHelloReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SayHelloReq) ProtoMessage() {}
-
-func (x *SayHelloReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SayHelloReq.ProtoReflect.Descriptor instead.
-func (*SayHelloReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *SayHelloReq) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-type SayHelloResp struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SayHelloResp) Reset() {
-	*x = SayHelloResp{}
-	mi := &file_user_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SayHelloResp) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SayHelloResp) ProtoMessage() {}
-
-func (x *SayHelloResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SayHelloResp.ProtoReflect.Descriptor instead.
-func (*SayHelloResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *SayHelloResp) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 type QueryUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -206,7 +30,7 @@ type QueryUserReq struct {
 
 func (x *QueryUserReq) Reset() {
 	*x = QueryUserReq{}
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -218,7 +42,7 @@ func (x *QueryUserReq) String() string {
 func (*QueryUserReq) ProtoMessage() {}
 
 func (x *QueryUserReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,7 +55,7 @@ func (x *QueryUserReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryUserReq.ProtoReflect.Descriptor instead.
 func (*QueryUserReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{4}
+	return file_user_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *QueryUserReq) GetId() int64 {
@@ -245,14 +69,15 @@ type QueryUserResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	Mobile        string                 `protobuf:"bytes,3,opt,name=mobile,proto3" json:"mobile,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *QueryUserResp) Reset() {
 	*x = QueryUserResp{}
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -264,7 +89,7 @@ func (x *QueryUserResp) String() string {
 func (*QueryUserResp) ProtoMessage() {}
 
 func (x *QueryUserResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -277,7 +102,7 @@ func (x *QueryUserResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryUserResp.ProtoReflect.Descriptor instead.
 func (*QueryUserResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{5}
+	return file_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *QueryUserResp) GetId() int64 {
@@ -294,34 +119,42 @@ func (x *QueryUserResp) GetUsername() string {
 	return ""
 }
 
-func (x *QueryUserResp) GetMobile() string {
+func (x *QueryUserResp) GetEmail() string {
 	if x != nil {
-		return x.Mobile
+		return x.Email
 	}
 	return ""
 }
 
-type ListArticleReq struct {
+func (x *QueryUserResp) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+type AuthenticateUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListArticleReq) Reset() {
-	*x = ListArticleReq{}
-	mi := &file_user_proto_msgTypes[6]
+func (x *AuthenticateUserReq) Reset() {
+	*x = AuthenticateUserReq{}
+	mi := &file_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListArticleReq) String() string {
+func (x *AuthenticateUserReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListArticleReq) ProtoMessage() {}
+func (*AuthenticateUserReq) ProtoMessage() {}
 
-func (x *ListArticleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[6]
+func (x *AuthenticateUserReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -332,33 +165,44 @@ func (x *ListArticleReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListArticleReq.ProtoReflect.Descriptor instead.
-func (*ListArticleReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{6}
+// Deprecated: Use AuthenticateUserReq.ProtoReflect.Descriptor instead.
+func (*AuthenticateUserReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{2}
 }
 
-type ListArticleResp struct {
+func (x *AuthenticateUserReq) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+type AuthenticateUserResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Articles      []*Article             `protobuf:"bytes,1,rep,name=articles,proto3" json:"articles,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
+	Password      string                 `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListArticleResp) Reset() {
-	*x = ListArticleResp{}
-	mi := &file_user_proto_msgTypes[7]
+func (x *AuthenticateUserResp) Reset() {
+	*x = AuthenticateUserResp{}
+	mi := &file_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListArticleResp) String() string {
+func (x *AuthenticateUserResp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListArticleResp) ProtoMessage() {}
+func (*AuthenticateUserResp) ProtoMessage() {}
 
-func (x *ListArticleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[7]
+func (x *AuthenticateUserResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -369,98 +213,59 @@ func (x *ListArticleResp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListArticleResp.ProtoReflect.Descriptor instead.
-func (*ListArticleResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use AuthenticateUserResp.ProtoReflect.Descriptor instead.
+func (*AuthenticateUserResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListArticleResp) GetArticles() []*Article {
-	if x != nil {
-		return x.Articles
-	}
-	return nil
-}
-
-type Article struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	Published     bool                   `protobuf:"varint,4,opt,name=published,proto3" json:"published,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Article) Reset() {
-	*x = Article{}
-	mi := &file_user_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Article) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Article) ProtoMessage() {}
-
-func (x *Article) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Article.ProtoReflect.Descriptor instead.
-func (*Article) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *Article) GetId() string {
+func (x *AuthenticateUserResp) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
-func (x *Article) GetTitle() string {
+func (x *AuthenticateUserResp) GetUsername() string {
 	if x != nil {
-		return x.Title
+		return x.Username
 	}
 	return ""
 }
 
-func (x *Article) GetContent() string {
+func (x *AuthenticateUserResp) GetEmail() string {
 	if x != nil {
-		return x.Content
+		return x.Email
 	}
 	return ""
 }
 
-func (x *Article) GetPublished() bool {
+func (x *AuthenticateUserResp) GetRole() string {
 	if x != nil {
-		return x.Published
+		return x.Role
 	}
-	return false
+	return ""
+}
+
+func (x *AuthenticateUserResp) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
 }
 
 type InsertUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	Mobile        string                 `protobuf:"bytes,3,opt,name=mobile,proto3" json:"mobile,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *InsertUserReq) Reset() {
 	*x = InsertUserReq{}
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -472,7 +277,7 @@ func (x *InsertUserReq) String() string {
 func (*InsertUserReq) ProtoMessage() {}
 
 func (x *InsertUserReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -485,7 +290,7 @@ func (x *InsertUserReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertUserReq.ProtoReflect.Descriptor instead.
 func (*InsertUserReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{9}
+	return file_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *InsertUserReq) GetUsername() string {
@@ -502,9 +307,16 @@ func (x *InsertUserReq) GetPassword() string {
 	return ""
 }
 
-func (x *InsertUserReq) GetMobile() string {
+func (x *InsertUserReq) GetEmail() string {
 	if x != nil {
-		return x.Mobile
+		return x.Email
+	}
+	return ""
+}
+
+func (x *InsertUserReq) GetRole() string {
+	if x != nil {
+		return x.Role
 	}
 	return ""
 }
@@ -518,7 +330,7 @@ type InsertUserResp struct {
 
 func (x *InsertUserResp) Reset() {
 	*x = InsertUserResp{}
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -530,7 +342,7 @@ func (x *InsertUserResp) String() string {
 func (*InsertUserResp) ProtoMessage() {}
 
 func (x *InsertUserResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -543,7 +355,7 @@ func (x *InsertUserResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertUserResp.ProtoReflect.Descriptor instead.
 func (*InsertUserResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{10}
+	return file_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *InsertUserResp) GetId() int64 {
@@ -553,30 +365,31 @@ func (x *InsertUserResp) GetId() int64 {
 	return 0
 }
 
-type InsertArticleReq struct {
+type UpdateUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
-	Published     bool                   `protobuf:"varint,3,opt,name=published,proto3" json:"published,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InsertArticleReq) Reset() {
-	*x = InsertArticleReq{}
-	mi := &file_user_proto_msgTypes[11]
+func (x *UpdateUserReq) Reset() {
+	*x = UpdateUserReq{}
+	mi := &file_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *InsertArticleReq) String() string {
+func (x *UpdateUserReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InsertArticleReq) ProtoMessage() {}
+func (*UpdateUserReq) ProtoMessage() {}
 
-func (x *InsertArticleReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[11]
+func (x *UpdateUserReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -587,54 +400,105 @@ func (x *InsertArticleReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use InsertArticleReq.ProtoReflect.Descriptor instead.
-func (*InsertArticleReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{11}
+// Deprecated: Use UpdateUserReq.ProtoReflect.Descriptor instead.
+func (*UpdateUserReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *InsertArticleReq) GetTitle() string {
+func (x *UpdateUserReq) GetId() int64 {
 	if x != nil {
-		return x.Title
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateUserReq) GetUsername() string {
+	if x != nil {
+		return x.Username
 	}
 	return ""
 }
 
-func (x *InsertArticleReq) GetContent() string {
+func (x *UpdateUserReq) GetEmail() string {
 	if x != nil {
-		return x.Content
+		return x.Email
 	}
 	return ""
 }
 
-func (x *InsertArticleReq) GetPublished() bool {
+func (x *UpdateUserReq) GetRole() string {
 	if x != nil {
-		return x.Published
+		return x.Role
+	}
+	return ""
+}
+
+type UpdateUserResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateUserResp) Reset() {
+	*x = UpdateUserResp{}
+	mi := &file_user_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateUserResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateUserResp) ProtoMessage() {}
+
+func (x *UpdateUserResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateUserResp.ProtoReflect.Descriptor instead.
+func (*UpdateUserResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateUserResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
 	}
 	return false
 }
 
-type InsertArticleResp struct {
+type DeleteUserReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InsertArticleResp) Reset() {
-	*x = InsertArticleResp{}
-	mi := &file_user_proto_msgTypes[12]
+func (x *DeleteUserReq) Reset() {
+	*x = DeleteUserReq{}
+	mi := &file_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *InsertArticleResp) String() string {
+func (x *DeleteUserReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InsertArticleResp) ProtoMessage() {}
+func (*DeleteUserReq) ProtoMessage() {}
 
-func (x *InsertArticleResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[12]
+func (x *DeleteUserReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -645,16 +509,60 @@ func (x *InsertArticleResp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use InsertArticleResp.ProtoReflect.Descriptor instead.
-func (*InsertArticleResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{12}
+// Deprecated: Use DeleteUserReq.ProtoReflect.Descriptor instead.
+func (*DeleteUserReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *InsertArticleResp) GetId() string {
+func (x *DeleteUserReq) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
+}
+
+type DeleteUserResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteUserResp) Reset() {
+	*x = DeleteUserResp{}
+	mi := &file_user_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteUserResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteUserResp) ProtoMessage() {}
+
+func (x *DeleteUserResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteUserResp.ProtoReflect.Descriptor instead.
+func (*DeleteUserResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *DeleteUserResp) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
 }
 
 type PusherReq struct {
@@ -665,7 +573,7 @@ type PusherReq struct {
 
 func (x *PusherReq) Reset() {
 	*x = PusherReq{}
-	mi := &file_user_proto_msgTypes[13]
+	mi := &file_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -677,7 +585,7 @@ func (x *PusherReq) String() string {
 func (*PusherReq) ProtoMessage() {}
 
 func (x *PusherReq) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[13]
+	mi := &file_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +598,7 @@ func (x *PusherReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PusherReq.ProtoReflect.Descriptor instead.
 func (*PusherReq) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{13}
+	return file_user_proto_rawDescGZIP(), []int{10}
 }
 
 type PusherResp struct {
@@ -701,7 +609,7 @@ type PusherResp struct {
 
 func (x *PusherResp) Reset() {
 	*x = PusherResp{}
-	mi := &file_user_proto_msgTypes[14]
+	mi := &file_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -713,7 +621,7 @@ func (x *PusherResp) String() string {
 func (*PusherResp) ProtoMessage() {}
 
 func (x *PusherResp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[14]
+	mi := &file_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -726,7 +634,7 @@ func (x *PusherResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PusherResp.ProtoReflect.Descriptor instead.
 func (*PusherResp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{14}
+	return file_user_proto_rawDescGZIP(), []int{11}
 }
 
 var File_user_proto protoreflect.FileDescriptor
@@ -734,52 +642,52 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x04user\"\x1d\n" +
-	"\aRequest\x12\x12\n" +
-	"\x04ping\x18\x01 \x01(\tR\x04ping\"\x1e\n" +
-	"\bResponse\x12\x12\n" +
-	"\x04pong\x18\x01 \x01(\tR\x04pong\"!\n" +
-	"\vSayHelloReq\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"(\n" +
-	"\fSayHelloResp\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"\x1e\n" +
+	"user.proto\x12\x04user\"\x1e\n" +
 	"\fQueryUserReq\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"S\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"e\n" +
 	"\rQueryUserResp\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12\x16\n" +
-	"\x06mobile\x18\x03 \x01(\tR\x06mobile\"\x10\n" +
-	"\x0eListArticleReq\"<\n" +
-	"\x0fListArticleResp\x12)\n" +
-	"\barticles\x18\x01 \x03(\v2\r.user.ArticleR\barticles\"g\n" +
-	"\aArticle\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1c\n" +
-	"\tpublished\x18\x04 \x01(\bR\tpublished\"_\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\"1\n" +
+	"\x13AuthenticateUserReq\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\"\x88\x01\n" +
+	"\x14AuthenticateUserResp\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\x12\x1a\n" +
+	"\bpassword\x18\x05 \x01(\tR\bpassword\"q\n" +
 	"\rInsertUserReq\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x16\n" +
-	"\x06mobile\x18\x03 \x01(\tR\x06mobile\" \n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\" \n" +
 	"\x0eInsertUserResp\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"`\n" +
-	"\x10InsertArticleReq\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\x12\x1c\n" +
-	"\tpublished\x18\x03 \x01(\bR\tpublished\"#\n" +
-	"\x11InsertArticleResp\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\v\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"e\n" +
+	"\rUpdateUserReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\"*\n" +
+	"\x0eUpdateUserResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x1f\n" +
+	"\rDeleteUserReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"*\n" +
+	"\x0eDeleteUserResp\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\v\n" +
 	"\tPusherReq\"\f\n" +
 	"\n" +
-	"PusherResp2\xfa\x02\n" +
-	"\x04User\x12%\n" +
-	"\x04Ping\x12\r.user.Request\x1a\x0e.user.Response\x121\n" +
-	"\bSayHello\x12\x11.user.SayHelloReq\x1a\x12.user.SayHelloResp\x124\n" +
-	"\tQueryUser\x12\x12.user.QueryUserReq\x1a\x13.user.QueryUserResp\x12:\n" +
-	"\vListArticle\x12\x14.user.ListArticleReq\x1a\x15.user.ListArticleResp\x127\n" +
+	"PusherResp2\xdf\x02\n" +
+	"\x04User\x124\n" +
+	"\tQueryUser\x12\x12.user.QueryUserReq\x1a\x13.user.QueryUserResp\x12I\n" +
+	"\x10AuthenticateUser\x12\x19.user.AuthenticateUserReq\x1a\x1a.user.AuthenticateUserResp\x127\n" +
 	"\n" +
-	"InsertUser\x12\x13.user.InsertUserReq\x1a\x14.user.InsertUserResp\x12@\n" +
-	"\rInsertArticle\x12\x16.user.InsertArticleReq\x1a\x17.user.InsertArticleResp\x12+\n" +
+	"InsertUser\x12\x13.user.InsertUserReq\x1a\x14.user.InsertUserResp\x127\n" +
+	"\n" +
+	"UpdateUser\x12\x13.user.UpdateUserReq\x1a\x14.user.UpdateUserResp\x127\n" +
+	"\n" +
+	"DeleteUser\x12\x13.user.DeleteUserReq\x1a\x14.user.DeleteUserResp\x12+\n" +
 	"\x06Pusher\x12\x0f.user.PusherReq\x1a\x10.user.PusherRespB\bZ\x06./userb\x06proto3"
 
 var (
@@ -794,45 +702,39 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_user_proto_goTypes = []any{
-	(*Request)(nil),           // 0: user.Request
-	(*Response)(nil),          // 1: user.Response
-	(*SayHelloReq)(nil),       // 2: user.SayHelloReq
-	(*SayHelloResp)(nil),      // 3: user.SayHelloResp
-	(*QueryUserReq)(nil),      // 4: user.QueryUserReq
-	(*QueryUserResp)(nil),     // 5: user.QueryUserResp
-	(*ListArticleReq)(nil),    // 6: user.ListArticleReq
-	(*ListArticleResp)(nil),   // 7: user.ListArticleResp
-	(*Article)(nil),           // 8: user.Article
-	(*InsertUserReq)(nil),     // 9: user.InsertUserReq
-	(*InsertUserResp)(nil),    // 10: user.InsertUserResp
-	(*InsertArticleReq)(nil),  // 11: user.InsertArticleReq
-	(*InsertArticleResp)(nil), // 12: user.InsertArticleResp
-	(*PusherReq)(nil),         // 13: user.PusherReq
-	(*PusherResp)(nil),        // 14: user.PusherResp
+	(*QueryUserReq)(nil),         // 0: user.QueryUserReq
+	(*QueryUserResp)(nil),        // 1: user.QueryUserResp
+	(*AuthenticateUserReq)(nil),  // 2: user.AuthenticateUserReq
+	(*AuthenticateUserResp)(nil), // 3: user.AuthenticateUserResp
+	(*InsertUserReq)(nil),        // 4: user.InsertUserReq
+	(*InsertUserResp)(nil),       // 5: user.InsertUserResp
+	(*UpdateUserReq)(nil),        // 6: user.UpdateUserReq
+	(*UpdateUserResp)(nil),       // 7: user.UpdateUserResp
+	(*DeleteUserReq)(nil),        // 8: user.DeleteUserReq
+	(*DeleteUserResp)(nil),       // 9: user.DeleteUserResp
+	(*PusherReq)(nil),            // 10: user.PusherReq
+	(*PusherResp)(nil),           // 11: user.PusherResp
 }
 var file_user_proto_depIdxs = []int32{
-	8,  // 0: user.ListArticleResp.articles:type_name -> user.Article
-	0,  // 1: user.User.Ping:input_type -> user.Request
-	2,  // 2: user.User.SayHello:input_type -> user.SayHelloReq
-	4,  // 3: user.User.QueryUser:input_type -> user.QueryUserReq
-	6,  // 4: user.User.ListArticle:input_type -> user.ListArticleReq
-	9,  // 5: user.User.InsertUser:input_type -> user.InsertUserReq
-	11, // 6: user.User.InsertArticle:input_type -> user.InsertArticleReq
-	13, // 7: user.User.Pusher:input_type -> user.PusherReq
-	1,  // 8: user.User.Ping:output_type -> user.Response
-	3,  // 9: user.User.SayHello:output_type -> user.SayHelloResp
-	5,  // 10: user.User.QueryUser:output_type -> user.QueryUserResp
-	7,  // 11: user.User.ListArticle:output_type -> user.ListArticleResp
-	10, // 12: user.User.InsertUser:output_type -> user.InsertUserResp
-	12, // 13: user.User.InsertArticle:output_type -> user.InsertArticleResp
-	14, // 14: user.User.Pusher:output_type -> user.PusherResp
-	8,  // [8:15] is the sub-list for method output_type
-	1,  // [1:8] is the sub-list for method input_type
-	1,  // [1:1] is the sub-list for extension type_name
-	1,  // [1:1] is the sub-list for extension extendee
-	0,  // [0:1] is the sub-list for field type_name
+	0,  // 0: user.User.QueryUser:input_type -> user.QueryUserReq
+	2,  // 1: user.User.AuthenticateUser:input_type -> user.AuthenticateUserReq
+	4,  // 2: user.User.InsertUser:input_type -> user.InsertUserReq
+	6,  // 3: user.User.UpdateUser:input_type -> user.UpdateUserReq
+	8,  // 4: user.User.DeleteUser:input_type -> user.DeleteUserReq
+	10, // 5: user.User.Pusher:input_type -> user.PusherReq
+	1,  // 6: user.User.QueryUser:output_type -> user.QueryUserResp
+	3,  // 7: user.User.AuthenticateUser:output_type -> user.AuthenticateUserResp
+	5,  // 8: user.User.InsertUser:output_type -> user.InsertUserResp
+	7,  // 9: user.User.UpdateUser:output_type -> user.UpdateUserResp
+	9,  // 10: user.User.DeleteUser:output_type -> user.DeleteUserResp
+	11, // 11: user.User.Pusher:output_type -> user.PusherResp
+	6,  // [6:12] is the sub-list for method output_type
+	0,  // [0:6] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -846,7 +748,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -12,7 +12,6 @@ type Config struct {
 	rest.RestConf
 	UserRpc   zrpc.RpcClientConf
 	Auth      AuthConfig
-	DB        DBConfig
 	Redis     RedisConfig
 	UploadDir string `json:",optional"`
 	S3Bucket  string `json:",optional"`
@@ -23,10 +22,6 @@ type AuthConfig struct {
 	AccessExpire  int64
 	RefreshSecret string
 	RefreshExpire int64
-}
-
-type DBConfig struct {
-	DataSource string
 }
 
 type RedisConfig struct {

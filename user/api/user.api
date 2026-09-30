@@ -28,7 +28,6 @@ type (
 	UpdateProfileReq {
 		UserId   int64  `path:"userId"`
 		Username string `json:"username"`
-		Role     string `json:"role"`
 	}
 	UpdateProfileResp {
 		Success bool `json:"success"`
@@ -72,9 +71,6 @@ service user-api {
 	@handler GetUserInfo
 	get /user/:id (UserInfoReq) returns (UserInfoResp)
 
-	@handler UpdateUserInfo
-	post /user/:id (UserUpdateReq) returns (UserUpdateResp)
-
 	@handler UploadFile
 	post /upload/file returns (UploadResp)
 }
@@ -97,6 +93,9 @@ service user-api {
 	middleware: JwtBlacklist
 )
 service user-api {
+	@handler UpdateUserInfo
+	post /user/:id (UserUpdateReq) returns (UserUpdateResp)
+
 	@handler GetProfile
 	get /user/profile/:userId (ProfileReq) returns (ProfileResp)
 
@@ -106,4 +105,3 @@ service user-api {
 	@handler Logout
 	post /user/logout returns (LogoutResp)
 }
-

@@ -1,4 +1,36 @@
+version: '3.8'
 services:
+  postgres:
+    image: postgres:17.2
+    container_name: postgres
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: appdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # 首次创建数据卷时自动执行建表脚本
+      - ./rpc/migrations:/docker-entrypoint-initdb.d:ro
+
+  etcd:
+    # 建议升级到更新的补丁版本，例如 v3.5.28
+    image: quay.io/coreos/etcd:v3.5.28
+    container_name: etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379  # 明确监听地址
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    healthcheck:  # 添加健康检查
+      test: ["CMD", "etcdctl", "endpoint", "health", "--endpoints=http://localhost:2379"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   kafka:
     image: apache/kafka:4.2.0
     container_name: kafka
@@ -19,7 +51,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
     healthcheck:
-      test: ["CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092"]
+      test: [ "CMD", "/opt/kafka/bin/kafka-broker-api-versions.sh", "--bootstrap-server", "localhost:9092" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -38,3 +70,6 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+
+volumes:
+  postgres-data:

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"user/api/internal/svc"
 	"user/api/internal/types"
+	"user/rpc/userclient"
 
 	"github.com/zeromicro/x/errors"
 )
@@ -38,14 +39,17 @@ func (l *GetProfileLogic) GetProfile(req *types.ProfileReq) (*types.ProfileResp,
 		return nil, errors.New(401, "无权访问")
 	}
 
-	user, err := l.svcCtx.UserModel.FindOne(l.ctx, req.UserId)
-	if err != nil || user == nil {
+	rpcUser, err := l.svcCtx.UserRpc.QueryUser(
+		l.svcCtx.RpcContext(l.ctx),
+		&userclient.QueryUserReq{Id: req.UserId},
+	)
+	if err != nil {
 		return nil, errors.New(401, "用户不存在")
 	}
 
 	return &types.ProfileResp{
-		UserId:   user.ID,
-		Username: user.Username,
-		Role:     user.Role,
+		UserId:   rpcUser.GetId(),
+		Username: rpcUser.GetUsername(),
+		Role:     rpcUser.GetRole(),
 	}, nil
 }

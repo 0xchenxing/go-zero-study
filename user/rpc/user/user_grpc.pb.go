@@ -19,25 +19,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_Ping_FullMethodName          = "/user.User/Ping"
-	User_SayHello_FullMethodName      = "/user.User/SayHello"
-	User_QueryUser_FullMethodName     = "/user.User/QueryUser"
-	User_ListArticle_FullMethodName   = "/user.User/ListArticle"
-	User_InsertUser_FullMethodName    = "/user.User/InsertUser"
-	User_InsertArticle_FullMethodName = "/user.User/InsertArticle"
-	User_Pusher_FullMethodName        = "/user.User/Pusher"
+	User_QueryUser_FullMethodName        = "/user.User/QueryUser"
+	User_AuthenticateUser_FullMethodName = "/user.User/AuthenticateUser"
+	User_InsertUser_FullMethodName       = "/user.User/InsertUser"
+	User_UpdateUser_FullMethodName       = "/user.User/UpdateUser"
+	User_DeleteUser_FullMethodName       = "/user.User/DeleteUser"
+	User_Pusher_FullMethodName           = "/user.User/Pusher"
 )
 
 // UserClient is the client API for User service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-	SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error)
 	QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error)
-	ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
+	AuthenticateUser(ctx context.Context, in *AuthenticateUserReq, opts ...grpc.CallOption) (*AuthenticateUserResp, error)
 	InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
-	InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
+	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
+	DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error)
 	Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
 }
 
@@ -47,26 +45,6 @@ type userClient struct {
 
 func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
-}
-
-func (c *userClient) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, User_Ping_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userClient) SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SayHelloResp)
-	err := c.cc.Invoke(ctx, User_SayHello_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *userClient) QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error) {
@@ -79,10 +57,10 @@ func (c *userClient) QueryUser(ctx context.Context, in *QueryUserReq, opts ...gr
 	return out, nil
 }
 
-func (c *userClient) ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error) {
+func (c *userClient) AuthenticateUser(ctx context.Context, in *AuthenticateUserReq, opts ...grpc.CallOption) (*AuthenticateUserResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListArticleResp)
-	err := c.cc.Invoke(ctx, User_ListArticle_FullMethodName, in, out, cOpts...)
+	out := new(AuthenticateUserResp)
+	err := c.cc.Invoke(ctx, User_AuthenticateUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,10 +77,20 @@ func (c *userClient) InsertUser(ctx context.Context, in *InsertUserReq, opts ...
 	return out, nil
 }
 
-func (c *userClient) InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error) {
+func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(InsertArticleResp)
-	err := c.cc.Invoke(ctx, User_InsertArticle_FullMethodName, in, out, cOpts...)
+	out := new(UpdateUserResp)
+	err := c.cc.Invoke(ctx, User_UpdateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteUserResp)
+	err := c.cc.Invoke(ctx, User_DeleteUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,12 +111,11 @@ func (c *userClient) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.Cal
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
 type UserServer interface {
-	Ping(context.Context, *Request) (*Response, error)
-	SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error)
 	QueryUser(context.Context, *QueryUserReq) (*QueryUserResp, error)
-	ListArticle(context.Context, *ListArticleReq) (*ListArticleResp, error)
+	AuthenticateUser(context.Context, *AuthenticateUserReq) (*AuthenticateUserResp, error)
 	InsertUser(context.Context, *InsertUserReq) (*InsertUserResp, error)
-	InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error)
+	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
+	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserResp, error)
 	Pusher(context.Context, *PusherReq) (*PusherResp, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -140,23 +127,20 @@ type UserServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserServer struct{}
 
-func (UnimplementedUserServer) Ping(context.Context, *Request) (*Response, error) {
-	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
-}
-func (UnimplementedUserServer) SayHello(context.Context, *SayHelloReq) (*SayHelloResp, error) {
-	return nil, status.Error(codes.Unimplemented, "method SayHello not implemented")
-}
 func (UnimplementedUserServer) QueryUser(context.Context, *QueryUserReq) (*QueryUserResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method QueryUser not implemented")
 }
-func (UnimplementedUserServer) ListArticle(context.Context, *ListArticleReq) (*ListArticleResp, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListArticle not implemented")
+func (UnimplementedUserServer) AuthenticateUser(context.Context, *AuthenticateUserReq) (*AuthenticateUserResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method AuthenticateUser not implemented")
 }
 func (UnimplementedUserServer) InsertUser(context.Context, *InsertUserReq) (*InsertUserResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method InsertUser not implemented")
 }
-func (UnimplementedUserServer) InsertArticle(context.Context, *InsertArticleReq) (*InsertArticleResp, error) {
-	return nil, status.Error(codes.Unimplemented, "method InsertArticle not implemented")
+func (UnimplementedUserServer) UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedUserServer) DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) Pusher(context.Context, *PusherReq) (*PusherResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method Pusher not implemented")
@@ -182,42 +166,6 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 	s.RegisterService(&User_ServiceDesc, srv)
 }
 
-func _User_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).Ping(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: User_Ping_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Ping(ctx, req.(*Request))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _User_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SayHelloReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).SayHello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: User_SayHello_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).SayHello(ctx, req.(*SayHelloReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _User_QueryUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QueryUserReq)
 	if err := dec(in); err != nil {
@@ -236,20 +184,20 @@ func _User_QueryUser_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_ListArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListArticleReq)
+func _User_AuthenticateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthenticateUserReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).ListArticle(ctx, in)
+		return srv.(UserServer).AuthenticateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_ListArticle_FullMethodName,
+		FullMethod: User_AuthenticateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).ListArticle(ctx, req.(*ListArticleReq))
+		return srv.(UserServer).AuthenticateUser(ctx, req.(*AuthenticateUserReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -272,20 +220,38 @@ func _User_InsertUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_InsertArticle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InsertArticleReq)
+func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).InsertArticle(ctx, in)
+		return srv.(UserServer).UpdateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_InsertArticle_FullMethodName,
+		FullMethod: User_UpdateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).InsertArticle(ctx, req.(*InsertArticleReq))
+		return srv.(UserServer).UpdateUser(ctx, req.(*UpdateUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_DeleteUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).DeleteUser(ctx, req.(*DeleteUserReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -316,28 +282,24 @@ var User_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _User_Ping_Handler,
-		},
-		{
-			MethodName: "SayHello",
-			Handler:    _User_SayHello_Handler,
-		},
-		{
 			MethodName: "QueryUser",
 			Handler:    _User_QueryUser_Handler,
 		},
 		{
-			MethodName: "ListArticle",
-			Handler:    _User_ListArticle_Handler,
+			MethodName: "AuthenticateUser",
+			Handler:    _User_AuthenticateUser_Handler,
 		},
 		{
 			MethodName: "InsertUser",
 			Handler:    _User_InsertUser_Handler,
 		},
 		{
-			MethodName: "InsertArticle",
-			Handler:    _User_InsertArticle_Handler,
+			MethodName: "UpdateUser",
+			Handler:    _User_UpdateUser_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _User_DeleteUser_Handler,
 		},
 		{
 			MethodName: "Pusher",

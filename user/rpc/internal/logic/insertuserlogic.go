@@ -2,11 +2,15 @@ package logic
 
 import (
 	"context"
+
+	"user/rpc/internal/dal/model"
 	"user/rpc/internal/svc"
-	"user/rpc/model/mysql"
 	"user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type InsertUserLogic struct {
@@ -16,18 +20,29 @@ type InsertUserLogic struct {
 }
 
 func NewInsertUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InsertUserLogic {
-	return &InsertUserLogic{ctx: ctx, svcCtx: svcCtx, Logger: logx.WithContext(ctx)}
+	return &InsertUserLogic{
+		ctx:    ctx,
+		svcCtx: svcCtx,
+		Logger: logx.WithContext(ctx),
+	}
 }
 
 func (l *InsertUserLogic) InsertUser(in *user.InsertUserReq) (*user.InsertUserResp, error) {
-	data := &mysql.User{
-		Username: in.Username,
-		Password: in.Password,
-		Mobile:   in.Mobile,
+	if in.GetUsername() == "" || in.GetEmail() == "" || in.GetPassword() == "" {
+		return nil, status.Error(codes.InvalidArgument, "用户名、邮箱和密码不能为空")
 	}
-	_, err := l.svcCtx.UserModel.Insert(l.ctx, data)
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(in.GetPassword()), bcrypt.DefaultCost)
 	if err != nil {
-		return nil, err
+		return nil, status.Error(codes.Internal, "密码处理失败")
 	}
-	return &user.InsertUserResp{Id: data.Id}, nil
+	role := in.GetRole()
+	if role == "" {
+		role = "user"
+	}
+	item := &model.User{Username: in.GetUsername(), Email: in.GetEmail(), Password: string(hash), Role: role}
+	if err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).Create(item); err != nil {
+		return nil, status.Error(codes.AlreadyExists, "用户名或邮箱已存在")
+	}
+	return &user.InsertUserResp{Id: item.ID}, nil
 }

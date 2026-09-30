@@ -14,29 +14,25 @@ import (
 )
 
 type (
-	Article           = user.Article
-	InsertArticleReq  = user.InsertArticleReq
-	InsertArticleResp = user.InsertArticleResp
-	InsertUserReq     = user.InsertUserReq
-	InsertUserResp    = user.InsertUserResp
-	ListArticleReq    = user.ListArticleReq
-	ListArticleResp   = user.ListArticleResp
-	PusherReq         = user.PusherReq
-	PusherResp        = user.PusherResp
-	QueryUserReq      = user.QueryUserReq
-	QueryUserResp     = user.QueryUserResp
-	Request           = user.Request
-	Response          = user.Response
-	SayHelloReq       = user.SayHelloReq
-	SayHelloResp      = user.SayHelloResp
+	AuthenticateUserReq  = user.AuthenticateUserReq
+	AuthenticateUserResp = user.AuthenticateUserResp
+	DeleteUserReq        = user.DeleteUserReq
+	DeleteUserResp       = user.DeleteUserResp
+	InsertUserReq        = user.InsertUserReq
+	InsertUserResp       = user.InsertUserResp
+	PusherReq            = user.PusherReq
+	PusherResp           = user.PusherResp
+	QueryUserReq         = user.QueryUserReq
+	QueryUserResp        = user.QueryUserResp
+	UpdateUserReq        = user.UpdateUserReq
+	UpdateUserResp       = user.UpdateUserResp
 
 	User interface {
-		Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
-		SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error)
 		QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error)
-		ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error)
+		AuthenticateUser(ctx context.Context, in *AuthenticateUserReq, opts ...grpc.CallOption) (*AuthenticateUserResp, error)
 		InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error)
-		InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error)
+		UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
+		DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error)
 		Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
 	}
 
@@ -51,24 +47,14 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
-	client := user.NewUserClient(m.cli.Conn())
-	return client.Ping(ctx, in, opts...)
-}
-
-func (m *defaultUser) SayHello(ctx context.Context, in *SayHelloReq, opts ...grpc.CallOption) (*SayHelloResp, error) {
-	client := user.NewUserClient(m.cli.Conn())
-	return client.SayHello(ctx, in, opts...)
-}
-
 func (m *defaultUser) QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.QueryUser(ctx, in, opts...)
 }
 
-func (m *defaultUser) ListArticle(ctx context.Context, in *ListArticleReq, opts ...grpc.CallOption) (*ListArticleResp, error) {
+func (m *defaultUser) AuthenticateUser(ctx context.Context, in *AuthenticateUserReq, opts ...grpc.CallOption) (*AuthenticateUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
-	return client.ListArticle(ctx, in, opts...)
+	return client.AuthenticateUser(ctx, in, opts...)
 }
 
 func (m *defaultUser) InsertUser(ctx context.Context, in *InsertUserReq, opts ...grpc.CallOption) (*InsertUserResp, error) {
@@ -76,9 +62,14 @@ func (m *defaultUser) InsertUser(ctx context.Context, in *InsertUserReq, opts ..
 	return client.InsertUser(ctx, in, opts...)
 }
 
-func (m *defaultUser) InsertArticle(ctx context.Context, in *InsertArticleReq, opts ...grpc.CallOption) (*InsertArticleResp, error) {
+func (m *defaultUser) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
-	return client.InsertArticle(ctx, in, opts...)
+	return client.UpdateUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DeleteUser(ctx, in, opts...)
 }
 
 func (m *defaultUser) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error) {
