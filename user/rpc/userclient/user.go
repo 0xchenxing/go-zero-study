@@ -14,18 +14,22 @@ import (
 )
 
 type (
-	AuthenticateUserReq  = user.AuthenticateUserReq
-	AuthenticateUserResp = user.AuthenticateUserResp
-	DeleteUserReq        = user.DeleteUserReq
-	DeleteUserResp       = user.DeleteUserResp
-	InsertUserReq        = user.InsertUserReq
-	InsertUserResp       = user.InsertUserResp
-	PusherReq            = user.PusherReq
-	PusherResp           = user.PusherResp
-	QueryUserReq         = user.QueryUserReq
-	QueryUserResp        = user.QueryUserResp
-	UpdateUserReq        = user.UpdateUserReq
-	UpdateUserResp       = user.UpdateUserResp
+	AuthenticateUserReq    = user.AuthenticateUserReq
+	AuthenticateUserResp   = user.AuthenticateUserResp
+	CreateUserWithTodoReq  = user.CreateUserWithTodoReq
+	CreateUserWithTodoResp = user.CreateUserWithTodoResp
+	DeleteUserReq          = user.DeleteUserReq
+	DeleteUserResp         = user.DeleteUserResp
+	InsertUserReq          = user.InsertUserReq
+	InsertUserResp         = user.InsertUserResp
+	PusherReq              = user.PusherReq
+	PusherResp             = user.PusherResp
+	QueryUserReq           = user.QueryUserReq
+	QueryUserResp          = user.QueryUserResp
+	RollbackDemoReq        = user.RollbackDemoReq
+	RollbackDemoResp       = user.RollbackDemoResp
+	UpdateUserReq          = user.UpdateUserReq
+	UpdateUserResp         = user.UpdateUserResp
 
 	User interface {
 		QueryUser(ctx context.Context, in *QueryUserReq, opts ...grpc.CallOption) (*QueryUserResp, error)
@@ -34,6 +38,8 @@ type (
 		UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 		DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error)
 		Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
+		CreateUserWithTodo(ctx context.Context, in *CreateUserWithTodoReq, opts ...grpc.CallOption) (*CreateUserWithTodoResp, error)
+		CreateUserWithTodoRollbackDemo(ctx context.Context, in *RollbackDemoReq, opts ...grpc.CallOption) (*RollbackDemoResp, error)
 	}
 
 	defaultUser struct {
@@ -75,4 +81,14 @@ func (m *defaultUser) DeleteUser(ctx context.Context, in *DeleteUserReq, opts ..
 func (m *defaultUser) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.Pusher(ctx, in, opts...)
+}
+
+func (m *defaultUser) CreateUserWithTodo(ctx context.Context, in *CreateUserWithTodoReq, opts ...grpc.CallOption) (*CreateUserWithTodoResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.CreateUserWithTodo(ctx, in, opts...)
+}
+
+func (m *defaultUser) CreateUserWithTodoRollbackDemo(ctx context.Context, in *RollbackDemoReq, opts ...grpc.CallOption) (*RollbackDemoResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.CreateUserWithTodoRollbackDemo(ctx, in, opts...)
 }

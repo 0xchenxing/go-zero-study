@@ -34,7 +34,7 @@ func main() {
 	httpx.SetErrorHandler(func(err error) (int, any) {
 		switch e := err.(type) {
 		case *errors.CodeMsg:
-			return http.StatusBadRequest, xhttp.BaseResponse[struct{}]{
+			return httpStatusFor(e.Code), xhttp.BaseResponse[struct{}]{
 				Code: e.Code,
 				Msg:  e.Msg,
 			}
@@ -60,4 +60,14 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
 		w.Header().Add("X-Middleware", "static-middleware")
 		next(w, r)
 	}
+}
+
+// httpStatusFor 把业务错误码映射成 HTTP 状态码。
+// 冲突类业务码（409，如账号已存在）需要按 409 Conflict 返回，
+// 其余保持项目原有行为，统一返回 400。
+func httpStatusFor(code int) int {
+	if code == http.StatusConflict {
+		return http.StatusConflict
+	}
+	return http.StatusBadRequest
 }

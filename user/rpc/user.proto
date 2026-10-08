@@ -42,6 +42,30 @@ message DeleteUserResp { bool success = 1; }
 message PusherReq {}
 message PusherResp {}
 
+// 场景 A：单个事务内同时创建用户与待办，任一步失败整体回滚。
+message CreateUserWithTodoReq {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string todo_title = 4;
+}
+message CreateUserWithTodoResp {
+  int64  user_id = 1;
+  string username = 2;
+  string email = 3;
+  int64  todo_id = 4;
+  string todo_title = 5;
+}
+
+// 场景 A 的回滚演示：先插入用户，再故意插入违反外键的待办，验证用户不会残留。
+message RollbackDemoReq {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string todo_title = 4;
+}
+message RollbackDemoResp { string message = 1; }
+
 service User {
   rpc QueryUser(QueryUserReq) returns(QueryUserResp);
   rpc AuthenticateUser(AuthenticateUserReq) returns(AuthenticateUserResp);
@@ -49,4 +73,6 @@ service User {
   rpc UpdateUser(UpdateUserReq) returns(UpdateUserResp);
   rpc DeleteUser(DeleteUserReq) returns(DeleteUserResp);
   rpc Pusher(PusherReq) returns(PusherResp);
+  rpc CreateUserWithTodo(CreateUserWithTodoReq) returns(CreateUserWithTodoResp);
+  rpc CreateUserWithTodoRollbackDemo(RollbackDemoReq) returns(RollbackDemoResp);
 }

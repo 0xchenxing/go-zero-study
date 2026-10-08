@@ -3,6 +3,31 @@
 
 package types
 
+type CreateUserReq struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type CreateUserResp struct {
+	Id int64 `json:"id"`
+}
+
+type CreateUserWithTodoReq struct {
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	TodoTitle string `json:"todoTitle"`
+}
+
+type CreateUserWithTodoResp struct {
+	UserId    int64  `json:"userId"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	TodoId    int64  `json:"todoId"`
+	TodoTitle string `json:"todoTitle"`
+}
+
 type LoginReq struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -31,6 +56,10 @@ type ProfileResp struct {
 
 type RefreshReq struct {
 	RefreshToken string `json:"refreshToken"`
+}
+
+type RollbackDemoResp struct {
+	Message string `json:"message"`
 }
 
 type SseReq struct {

@@ -42,7 +42,8 @@ func (l *InsertUserLogic) InsertUser(in *user.InsertUserReq) (*user.InsertUserRe
 	}
 	item := &model.User{Username: in.GetUsername(), Email: in.GetEmail(), Password: string(hash), Role: role}
 	if err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).Create(item); err != nil {
-		return nil, status.Error(codes.AlreadyExists, "用户名或邮箱已存在")
+		l.Errorf("insert user failed: username=%s email=%s err=%v", in.GetUsername(), in.GetEmail(), err)
+		return nil, mapCreateUserError(err)
 	}
 	return &user.InsertUserResp{Id: item.ID}, nil
 }

@@ -19,12 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_QueryUser_FullMethodName        = "/user.User/QueryUser"
-	User_AuthenticateUser_FullMethodName = "/user.User/AuthenticateUser"
-	User_InsertUser_FullMethodName       = "/user.User/InsertUser"
-	User_UpdateUser_FullMethodName       = "/user.User/UpdateUser"
-	User_DeleteUser_FullMethodName       = "/user.User/DeleteUser"
-	User_Pusher_FullMethodName           = "/user.User/Pusher"
+	User_QueryUser_FullMethodName                      = "/user.User/QueryUser"
+	User_AuthenticateUser_FullMethodName               = "/user.User/AuthenticateUser"
+	User_InsertUser_FullMethodName                     = "/user.User/InsertUser"
+	User_UpdateUser_FullMethodName                     = "/user.User/UpdateUser"
+	User_DeleteUser_FullMethodName                     = "/user.User/DeleteUser"
+	User_Pusher_FullMethodName                         = "/user.User/Pusher"
+	User_CreateUserWithTodo_FullMethodName             = "/user.User/CreateUserWithTodo"
+	User_CreateUserWithTodoRollbackDemo_FullMethodName = "/user.User/CreateUserWithTodoRollbackDemo"
 )
 
 // UserClient is the client API for User service.
@@ -37,6 +39,8 @@ type UserClient interface {
 	UpdateUser(ctx context.Context, in *UpdateUserReq, opts ...grpc.CallOption) (*UpdateUserResp, error)
 	DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserResp, error)
 	Pusher(ctx context.Context, in *PusherReq, opts ...grpc.CallOption) (*PusherResp, error)
+	CreateUserWithTodo(ctx context.Context, in *CreateUserWithTodoReq, opts ...grpc.CallOption) (*CreateUserWithTodoResp, error)
+	CreateUserWithTodoRollbackDemo(ctx context.Context, in *RollbackDemoReq, opts ...grpc.CallOption) (*RollbackDemoResp, error)
 }
 
 type userClient struct {
@@ -107,6 +111,26 @@ func (c *userClient) Pusher(ctx context.Context, in *PusherReq, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *userClient) CreateUserWithTodo(ctx context.Context, in *CreateUserWithTodoReq, opts ...grpc.CallOption) (*CreateUserWithTodoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateUserWithTodoResp)
+	err := c.cc.Invoke(ctx, User_CreateUserWithTodo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) CreateUserWithTodoRollbackDemo(ctx context.Context, in *RollbackDemoReq, opts ...grpc.CallOption) (*RollbackDemoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RollbackDemoResp)
+	err := c.cc.Invoke(ctx, User_CreateUserWithTodoRollbackDemo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
@@ -117,6 +141,8 @@ type UserServer interface {
 	UpdateUser(context.Context, *UpdateUserReq) (*UpdateUserResp, error)
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserResp, error)
 	Pusher(context.Context, *PusherReq) (*PusherResp, error)
+	CreateUserWithTodo(context.Context, *CreateUserWithTodoReq) (*CreateUserWithTodoResp, error)
+	CreateUserWithTodoRollbackDemo(context.Context, *RollbackDemoReq) (*RollbackDemoResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -144,6 +170,12 @@ func (UnimplementedUserServer) DeleteUser(context.Context, *DeleteUserReq) (*Del
 }
 func (UnimplementedUserServer) Pusher(context.Context, *PusherReq) (*PusherResp, error) {
 	return nil, status.Error(codes.Unimplemented, "method Pusher not implemented")
+}
+func (UnimplementedUserServer) CreateUserWithTodo(context.Context, *CreateUserWithTodoReq) (*CreateUserWithTodoResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateUserWithTodo not implemented")
+}
+func (UnimplementedUserServer) CreateUserWithTodoRollbackDemo(context.Context, *RollbackDemoReq) (*RollbackDemoResp, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateUserWithTodoRollbackDemo not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 func (UnimplementedUserServer) testEmbeddedByValue()              {}
@@ -274,6 +306,42 @@ func _User_Pusher_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_CreateUserWithTodo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserWithTodoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateUserWithTodo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_CreateUserWithTodo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateUserWithTodo(ctx, req.(*CreateUserWithTodoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_CreateUserWithTodoRollbackDemo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RollbackDemoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateUserWithTodoRollbackDemo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_CreateUserWithTodoRollbackDemo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateUserWithTodoRollbackDemo(ctx, req.(*RollbackDemoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +372,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Pusher",
 			Handler:    _User_Pusher_Handler,
+		},
+		{
+			MethodName: "CreateUserWithTodo",
+			Handler:    _User_CreateUserWithTodo_Handler,
+		},
+		{
+			MethodName: "CreateUserWithTodoRollbackDemo",
+			Handler:    _User_CreateUserWithTodoRollbackDemo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

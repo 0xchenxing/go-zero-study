@@ -34,6 +34,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/user/refresh",
 				Handler: RefreshTokenHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/users",
+				Handler: CreateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/users-with-todo",
+				Handler: CreateUserWithTodoHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/users-with-todo/rollback-demo",
+				Handler: CreateUserWithTodoRollbackDemoHandler(serverCtx),
+			},
 		},
 	)
 
@@ -59,13 +74,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/user/logout",
-					Handler: LogoutHandler(serverCtx),
+					Path:    "/user/:id",
+					Handler: UpdateUserInfoHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/user/:id",
-					Handler: UpdateUserInfoHandler(serverCtx),
+					Path:    "/user/logout",
+					Handler: LogoutHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodGet,

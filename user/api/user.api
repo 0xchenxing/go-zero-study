@@ -59,6 +59,30 @@ type (
 		Size     int64  `json:"size"`
 		URL      string `json:"url"`
 	}
+	CreateUserReq {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	CreateUserResp {
+		Id int64 `json:"id"`
+	}
+	CreateUserWithTodoReq {
+		Username  string `json:"username"`
+		Email     string `json:"email"`
+		Password  string `json:"password"`
+		TodoTitle string `json:"todoTitle"`
+	}
+	CreateUserWithTodoResp {
+		UserId    int64  `json:"userId"`
+		Username  string `json:"username"`
+		Email     string `json:"email"`
+		TodoId    int64  `json:"todoId"`
+		TodoTitle string `json:"todoTitle"`
+	}
+	RollbackDemoResp {
+		Message string `json:"message"`
+	}
 )
 
 service user-api {
@@ -73,6 +97,18 @@ service user-api {
 
 	@handler UploadFile
 	post /upload/file returns (UploadResp)
+
+	// 场景 B：新增用户。重复账号命中唯一索引，返回 409 业务错误。
+	@handler CreateUser
+	post /users (CreateUserReq) returns (CreateUserResp)
+
+	// 场景 A：单个事务内创建用户 + 待办，任一步失败整体回滚。
+	@handler CreateUserWithTodo
+	post /users-with-todo (CreateUserWithTodoReq) returns (CreateUserWithTodoResp)
+
+	// 场景 A 的回滚演示：第二步故意违反外键，验证用户不会残留。
+	@handler CreateUserWithTodoRollbackDemo
+	post /users-with-todo/rollback-demo (CreateUserWithTodoReq) returns (RollbackDemoResp)
 }
 
 @server (

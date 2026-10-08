@@ -637,6 +637,264 @@ func (*PusherResp) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{11}
 }
 
+// 场景 A：单个事务内同时创建用户与待办，任一步失败整体回滚。
+type CreateUserWithTodoReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	TodoTitle     string                 `protobuf:"bytes,4,opt,name=todo_title,json=todoTitle,proto3" json:"todo_title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserWithTodoReq) Reset() {
+	*x = CreateUserWithTodoReq{}
+	mi := &file_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserWithTodoReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserWithTodoReq) ProtoMessage() {}
+
+func (x *CreateUserWithTodoReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserWithTodoReq.ProtoReflect.Descriptor instead.
+func (*CreateUserWithTodoReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CreateUserWithTodoReq) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *CreateUserWithTodoReq) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *CreateUserWithTodoReq) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *CreateUserWithTodoReq) GetTodoTitle() string {
+	if x != nil {
+		return x.TodoTitle
+	}
+	return ""
+}
+
+type CreateUserWithTodoResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	TodoId        int64                  `protobuf:"varint,4,opt,name=todo_id,json=todoId,proto3" json:"todo_id,omitempty"`
+	TodoTitle     string                 `protobuf:"bytes,5,opt,name=todo_title,json=todoTitle,proto3" json:"todo_title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateUserWithTodoResp) Reset() {
+	*x = CreateUserWithTodoResp{}
+	mi := &file_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateUserWithTodoResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateUserWithTodoResp) ProtoMessage() {}
+
+func (x *CreateUserWithTodoResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateUserWithTodoResp.ProtoReflect.Descriptor instead.
+func (*CreateUserWithTodoResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateUserWithTodoResp) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *CreateUserWithTodoResp) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *CreateUserWithTodoResp) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *CreateUserWithTodoResp) GetTodoId() int64 {
+	if x != nil {
+		return x.TodoId
+	}
+	return 0
+}
+
+func (x *CreateUserWithTodoResp) GetTodoTitle() string {
+	if x != nil {
+		return x.TodoTitle
+	}
+	return ""
+}
+
+// 场景 A 的回滚演示：先插入用户，再故意插入违反外键的待办，验证用户不会残留。
+type RollbackDemoReq struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	TodoTitle     string                 `protobuf:"bytes,4,opt,name=todo_title,json=todoTitle,proto3" json:"todo_title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RollbackDemoReq) Reset() {
+	*x = RollbackDemoReq{}
+	mi := &file_user_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RollbackDemoReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RollbackDemoReq) ProtoMessage() {}
+
+func (x *RollbackDemoReq) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RollbackDemoReq.ProtoReflect.Descriptor instead.
+func (*RollbackDemoReq) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *RollbackDemoReq) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RollbackDemoReq) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *RollbackDemoReq) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *RollbackDemoReq) GetTodoTitle() string {
+	if x != nil {
+		return x.TodoTitle
+	}
+	return ""
+}
+
+type RollbackDemoResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RollbackDemoResp) Reset() {
+	*x = RollbackDemoResp{}
+	mi := &file_user_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RollbackDemoResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RollbackDemoResp) ProtoMessage() {}
+
+func (x *RollbackDemoResp) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RollbackDemoResp.ProtoReflect.Descriptor instead.
+func (*RollbackDemoResp) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *RollbackDemoResp) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -678,7 +936,28 @@ const file_user_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\v\n" +
 	"\tPusherReq\"\f\n" +
 	"\n" +
-	"PusherResp2\xdf\x02\n" +
+	"PusherResp\"\x84\x01\n" +
+	"\x15CreateUserWithTodoReq\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x1d\n" +
+	"\n" +
+	"todo_title\x18\x04 \x01(\tR\ttodoTitle\"\x9b\x01\n" +
+	"\x16CreateUserWithTodoResp\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x17\n" +
+	"\atodo_id\x18\x04 \x01(\x03R\x06todoId\x12\x1d\n" +
+	"\n" +
+	"todo_title\x18\x05 \x01(\tR\ttodoTitle\"~\n" +
+	"\x0fRollbackDemoReq\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x03 \x01(\tR\bpassword\x12\x1d\n" +
+	"\n" +
+	"todo_title\x18\x04 \x01(\tR\ttodoTitle\",\n" +
+	"\x10RollbackDemoResp\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2\x81\x04\n" +
 	"\x04User\x124\n" +
 	"\tQueryUser\x12\x12.user.QueryUserReq\x1a\x13.user.QueryUserResp\x12I\n" +
 	"\x10AuthenticateUser\x12\x19.user.AuthenticateUserReq\x1a\x1a.user.AuthenticateUserResp\x127\n" +
@@ -688,7 +967,9 @@ const file_user_proto_rawDesc = "" +
 	"UpdateUser\x12\x13.user.UpdateUserReq\x1a\x14.user.UpdateUserResp\x127\n" +
 	"\n" +
 	"DeleteUser\x12\x13.user.DeleteUserReq\x1a\x14.user.DeleteUserResp\x12+\n" +
-	"\x06Pusher\x12\x0f.user.PusherReq\x1a\x10.user.PusherRespB\bZ\x06./userb\x06proto3"
+	"\x06Pusher\x12\x0f.user.PusherReq\x1a\x10.user.PusherResp\x12O\n" +
+	"\x12CreateUserWithTodo\x12\x1b.user.CreateUserWithTodoReq\x1a\x1c.user.CreateUserWithTodoResp\x12O\n" +
+	"\x1eCreateUserWithTodoRollbackDemo\x12\x15.user.RollbackDemoReq\x1a\x16.user.RollbackDemoRespB\bZ\x06./userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
@@ -702,20 +983,24 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_user_proto_goTypes = []any{
-	(*QueryUserReq)(nil),         // 0: user.QueryUserReq
-	(*QueryUserResp)(nil),        // 1: user.QueryUserResp
-	(*AuthenticateUserReq)(nil),  // 2: user.AuthenticateUserReq
-	(*AuthenticateUserResp)(nil), // 3: user.AuthenticateUserResp
-	(*InsertUserReq)(nil),        // 4: user.InsertUserReq
-	(*InsertUserResp)(nil),       // 5: user.InsertUserResp
-	(*UpdateUserReq)(nil),        // 6: user.UpdateUserReq
-	(*UpdateUserResp)(nil),       // 7: user.UpdateUserResp
-	(*DeleteUserReq)(nil),        // 8: user.DeleteUserReq
-	(*DeleteUserResp)(nil),       // 9: user.DeleteUserResp
-	(*PusherReq)(nil),            // 10: user.PusherReq
-	(*PusherResp)(nil),           // 11: user.PusherResp
+	(*QueryUserReq)(nil),           // 0: user.QueryUserReq
+	(*QueryUserResp)(nil),          // 1: user.QueryUserResp
+	(*AuthenticateUserReq)(nil),    // 2: user.AuthenticateUserReq
+	(*AuthenticateUserResp)(nil),   // 3: user.AuthenticateUserResp
+	(*InsertUserReq)(nil),          // 4: user.InsertUserReq
+	(*InsertUserResp)(nil),         // 5: user.InsertUserResp
+	(*UpdateUserReq)(nil),          // 6: user.UpdateUserReq
+	(*UpdateUserResp)(nil),         // 7: user.UpdateUserResp
+	(*DeleteUserReq)(nil),          // 8: user.DeleteUserReq
+	(*DeleteUserResp)(nil),         // 9: user.DeleteUserResp
+	(*PusherReq)(nil),              // 10: user.PusherReq
+	(*PusherResp)(nil),             // 11: user.PusherResp
+	(*CreateUserWithTodoReq)(nil),  // 12: user.CreateUserWithTodoReq
+	(*CreateUserWithTodoResp)(nil), // 13: user.CreateUserWithTodoResp
+	(*RollbackDemoReq)(nil),        // 14: user.RollbackDemoReq
+	(*RollbackDemoResp)(nil),       // 15: user.RollbackDemoResp
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: user.User.QueryUser:input_type -> user.QueryUserReq
@@ -724,14 +1009,18 @@ var file_user_proto_depIdxs = []int32{
 	6,  // 3: user.User.UpdateUser:input_type -> user.UpdateUserReq
 	8,  // 4: user.User.DeleteUser:input_type -> user.DeleteUserReq
 	10, // 5: user.User.Pusher:input_type -> user.PusherReq
-	1,  // 6: user.User.QueryUser:output_type -> user.QueryUserResp
-	3,  // 7: user.User.AuthenticateUser:output_type -> user.AuthenticateUserResp
-	5,  // 8: user.User.InsertUser:output_type -> user.InsertUserResp
-	7,  // 9: user.User.UpdateUser:output_type -> user.UpdateUserResp
-	9,  // 10: user.User.DeleteUser:output_type -> user.DeleteUserResp
-	11, // 11: user.User.Pusher:output_type -> user.PusherResp
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
+	12, // 6: user.User.CreateUserWithTodo:input_type -> user.CreateUserWithTodoReq
+	14, // 7: user.User.CreateUserWithTodoRollbackDemo:input_type -> user.RollbackDemoReq
+	1,  // 8: user.User.QueryUser:output_type -> user.QueryUserResp
+	3,  // 9: user.User.AuthenticateUser:output_type -> user.AuthenticateUserResp
+	5,  // 10: user.User.InsertUser:output_type -> user.InsertUserResp
+	7,  // 11: user.User.UpdateUser:output_type -> user.UpdateUserResp
+	9,  // 12: user.User.DeleteUser:output_type -> user.DeleteUserResp
+	11, // 13: user.User.Pusher:output_type -> user.PusherResp
+	13, // 14: user.User.CreateUserWithTodo:output_type -> user.CreateUserWithTodoResp
+	15, // 15: user.User.CreateUserWithTodoRollbackDemo:output_type -> user.RollbackDemoResp
+	8,  // [8:16] is the sub-list for method output_type
+	0,  // [0:8] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -748,7 +1037,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -52,3 +52,13 @@ func (s *UserServer) Pusher(ctx context.Context, in *user.PusherReq) (*user.Push
 	l := logic.NewPusherLogic(ctx, s.svcCtx)
 	return l.Pusher(in)
 }
+
+func (s *UserServer) CreateUserWithTodo(ctx context.Context, in *user.CreateUserWithTodoReq) (*user.CreateUserWithTodoResp, error) {
+	l := logic.NewCreateUserWithTodoLogic(ctx, s.svcCtx)
+	return l.CreateUserWithTodo(in)
+}
+
+func (s *UserServer) CreateUserWithTodoRollbackDemo(ctx context.Context, in *user.RollbackDemoReq) (*user.RollbackDemoResp, error) {
+	l := logic.NewCreateUserWithTodoRollbackDemoLogic(ctx, s.svcCtx)
+	return l.CreateUserWithTodoRollbackDemo(in)
+}

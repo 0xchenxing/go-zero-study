@@ -18,10 +18,10 @@ type User struct {
 	Username  string         `gorm:"column:username;not null;uniqueIndex:idx_users_username,priority:1" json:"username"`
 	Email     string         `gorm:"column:email;not null;uniqueIndex:idx_users_email,priority:1" json:"email"`
 	Password  string         `gorm:"column:password;not null" json:"-"`
+	Role      string         `gorm:"column:role;not null;default:user" json:"role"`
 	CreatedAt time.Time      `gorm:"column:created_at;not null;default:now()" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null;default:now()" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;index:idx_users_deleted_at,priority:1" json:"deleted_at"`
-	Role      string         `gorm:"column:role;not null;default:user" json:"role"`
 }
 
 // TableName User's table name
