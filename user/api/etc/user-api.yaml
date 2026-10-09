@@ -16,12 +16,12 @@ Prometheus:
   Path: /metrics     # 指标路径，默认就是 /metrics
 
 UserRpc:
-  #  Etcd:
-  #    Hosts:
-  #      - 127.0.0.1:2379
-  #    Key: user.rpc
-  Endpoints:
-    - 127.0.0.1:8080
+    Etcd:
+      Hosts:
+        - 127.0.0.1:2379
+      Key: user.rpc
+#  Endpoints:
+#    - 127.0.0.1:8080
 
 Auth:
   AccessSecret: "your-256-bit-secret-key-must-be-32-bytes"

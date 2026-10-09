@@ -15,7 +15,7 @@ import (
 func RefreshTokenHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.RefreshReq
-		if err := httpx.Parse(r, &req); err != nil {
+		if err := parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
@@ -25,7 +25,7 @@ func RefreshTokenHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			okJson(r.Context(), w, resp)
 		}
 	}
 }

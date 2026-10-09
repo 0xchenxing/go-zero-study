@@ -5,14 +5,12 @@ package logic
 
 import (
 	"context"
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type GetUserInfoLogic struct {
@@ -30,15 +28,16 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
+	if req.Id <= 0 {
+		return nil, errcode.NewError(errcode.ErrBadRequest.Code, "用户 ID 无效")
+	}
+
 	rpcResp, err := l.svcCtx.UserRpc.QueryUser(
 		l.svcCtx.RpcContext(l.ctx),
 		&userclient.QueryUserReq{Id: req.Id},
 	)
 	if err != nil {
-		if status.Code(err) == codes.NotFound {
-			return nil, errors.New(404, "用户不存在")
-		}
-		return nil, err
+		return nil, mapRpcError(err)
 	}
 
 	return &types.UserInfoResp{

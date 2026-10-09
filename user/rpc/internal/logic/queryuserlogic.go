@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"user/rpc/internal/svc"
 	"user/rpc/user"
@@ -34,9 +35,10 @@ func (l *QueryUserLogic) QueryUser(in *user.QueryUserReq) (*user.QueryUserResp, 
 	item, err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).
 		Where(l.svcCtx.PostgresQuery.User.ID.Eq(in.GetId())).First()
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Error(codes.NotFound, "用户不存在")
 		}
+		l.Errorf("query user failed: id=%d err=%v", in.GetId(), err)
 		return nil, status.Error(codes.Internal, "查询用户失败")
 	}
 

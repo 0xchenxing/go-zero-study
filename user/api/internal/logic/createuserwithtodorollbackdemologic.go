@@ -5,14 +5,12 @@ package logic
 
 import (
 	"context"
-	"net/http"
-
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
 )
 
 type CreateUserWithTodoRollbackDemoLogic struct {
@@ -33,7 +31,7 @@ func NewCreateUserWithTodoRollbackDemoLogic(ctx context.Context, svcCtx *svc.Ser
 // 事务整体回滚。接口返回成功，由 message 说明"已回滚"，用户不会残留。
 func (l *CreateUserWithTodoRollbackDemoLogic) CreateUserWithTodoRollbackDemo(req *types.CreateUserWithTodoReq) (resp *types.RollbackDemoResp, err error) {
 	if req.Username == "" || req.Email == "" || req.Password == "" || req.TodoTitle == "" {
-		return nil, errors.New(http.StatusBadRequest, "用户名、邮箱、密码和待办标题不能为空")
+		return nil, errcode.NewError(errcode.ErrBadRequest.Code, "用户名、邮箱、密码和待办标题不能为空")
 	}
 
 	rpcResp, err := l.svcCtx.UserRpc.CreateUserWithTodoRollbackDemo(

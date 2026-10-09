@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"user/rpc/internal/svc"
 	"user/rpc/user"
@@ -33,9 +34,10 @@ func (l *AuthenticateUserLogic) AuthenticateUser(in *user.AuthenticateUserReq) (
 	item, err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).
 		Where(l.svcCtx.PostgresQuery.User.Username.Eq(in.GetUsername())).First()
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, status.Error(codes.NotFound, "用户不存在")
 		}
+		l.Errorf("authenticate query failed: username=%s err=%v", in.GetUsername(), err)
 		return nil, status.Error(codes.Internal, "查询用户失败")
 	}
 	return &user.AuthenticateUserResp{Id: item.ID, Username: item.Username, Email: item.Email, Role: item.Role, Password: item.Password}, nil

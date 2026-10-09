@@ -10,13 +10,12 @@ import (
 	"user/api/internal/types"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	xhttp "github.com/zeromicro/x/http"
 )
 
 func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.LoginReq
-		if err := httpx.Parse(r, &req); err != nil {
+		if err := parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
@@ -24,9 +23,10 @@ func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		l := logic.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
 		if err != nil {
-			xhttp.JsonBaseResponseCtx(r.Context(), w, err)
+			// 交给全局错误处理器，保证与其他接口使用同一套响应结构。
+			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
-			xhttp.JsonBaseResponseCtx(r.Context(), w, resp)
+			okJson(r.Context(), w, resp)
 		}
 	}
 }

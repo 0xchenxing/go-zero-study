@@ -5,14 +5,15 @@ package logic
 
 import (
 	"context"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
-	"golang.org/x/crypto/bcrypt"
 	"time"
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
+
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/zeromicro/go-zero/core/logx"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type LoginLogic struct {
@@ -31,17 +32,21 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err error) {
 	rpcUser, err := l.svcCtx.UserRpc.AuthenticateUser(l.svcCtx.RpcContext(l.ctx), &userclient.AuthenticateUserReq{Username: req.Username})
-	if err != nil || bcrypt.CompareHashAndPassword([]byte(rpcUser.GetPassword()), []byte(req.Password)) != nil {
-		return nil, errors.New(422, "用户名或密码错误")
+	if err != nil {
+		return nil, mapAuthenticateError(err)
+	}
+
+	if bcrypt.CompareHashAndPassword([]byte(rpcUser.GetPassword()), []byte(req.Password)) != nil {
+		return nil, errcode.ErrUserPasswordInvalid
 	}
 
 	accessToken, err := generateAccessToken(l.svcCtx.Config.Auth.AccessSecret, rpcUser.GetId(), rpcUser.GetRole())
 	if err != nil {
-		return nil, errors.New(422, "生成 token 失败")
+		return nil, errcode.ErrUserTokenGenerate.WithDetail(err.Error())
 	}
 	refreshToken, err := generateRefreshToken(l.svcCtx.Config.Auth.RefreshSecret, l.svcCtx.Config.Auth.RefreshExpire, rpcUser.GetId())
 	if err != nil {
-		return nil, errors.New(422, "生成 refresh token 失败")
+		return nil, errcode.ErrUserTokenGenerate.WithDetail(err.Error())
 	}
 
 	return &types.LoginResp{

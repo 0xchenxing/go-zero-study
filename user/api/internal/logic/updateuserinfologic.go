@@ -5,12 +5,12 @@ package logic
 
 import (
 	"context"
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
 )
 
 type UpdateUserInfoLogic struct {
@@ -30,7 +30,7 @@ func NewUpdateUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Up
 func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UserUpdateReq) (resp *types.UserUpdateResp, err error) {
 	role, ok := l.ctx.Value("role").(string)
 	if !ok || role != "admin" {
-		return nil, errors.New(403, "无权访问")
+		return nil, errcode.ErrForbidden
 	}
 
 	_, err = l.svcCtx.UserRpc.UpdateUser(
@@ -42,7 +42,7 @@ func (l *UpdateUserInfoLogic) UpdateUserInfo(req *types.UserUpdateReq) (resp *ty
 		},
 	)
 	if err != nil {
-		return nil, err
+		return nil, mapRpcError(err)
 	}
 
 	return &types.UserUpdateResp{Info: "success"}, nil

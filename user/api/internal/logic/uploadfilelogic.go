@@ -11,12 +11,11 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
 )
 
 type UploadFileLogic struct {
@@ -37,7 +36,7 @@ func (l *UploadFileLogic) UploadFile(file multipart.File, header *multipart.File
 	// 校验大小
 	const maxSize = 10 << 20 // 10 MB
 	if header.Size > maxSize {
-		return nil, errors.New(422, "文件超过 10 MB 限制")
+		return nil, errcode.ErrUploadFileSize
 	}
 
 	// 安全处理文件名，防路径穿越
@@ -47,19 +46,19 @@ func (l *UploadFileLogic) UploadFile(file multipart.File, header *multipart.File
 	if _, err := os.Stat(l.svcCtx.Config.UploadDir); os.IsNotExist(err) {
 		err = os.MkdirAll(l.svcCtx.Config.UploadDir, os.ModePerm)
 		if err != nil {
-			return nil, fmt.Errorf("无法创建上传目录: %w", err)
+			return nil, errcode.ErrInternalServer.WithDetail(err.Error())
 		}
 	}
 
 	dst, err := os.Create(filepath.Join(l.svcCtx.Config.UploadDir, safeFilename))
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrInternalServer.WithDetail(err.Error())
 	}
 	defer dst.Close()
 
 	size, err := io.Copy(dst, file)
 	if err != nil {
-		return nil, err
+		return nil, errcode.ErrInternalServer.WithDetail(err.Error())
 	}
 
 	return &types.UploadResp{

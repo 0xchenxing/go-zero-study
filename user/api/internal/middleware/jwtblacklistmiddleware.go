@@ -3,10 +3,10 @@ package middleware
 import (
 	"net/http"
 	"strings"
+	"user/api/common/errcode"
 
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest/httpx"
-	errorx "github.com/zeromicro/x/errors"
 )
 
 type JwtBlacklistMiddleware struct {
@@ -30,7 +30,7 @@ func (m *JwtBlacklistMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 		if tokenStr != "" {
 			exists, err := m.Redis.Exists("jwt:revoked:" + tokenStr)
 			if err == nil && exists {
-				httpx.ErrorCtx(r.Context(), w, errorx.New(http.StatusUnauthorized, "Token 已失效"))
+				httpx.ErrorCtx(r.Context(), w, errcode.ErrUserTokenInvalid)
 				return
 			}
 		}

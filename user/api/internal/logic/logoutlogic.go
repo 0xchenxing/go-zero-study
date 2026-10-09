@@ -6,7 +6,7 @@ package logic
 import (
 	"context"
 	"time"
-
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 
@@ -29,26 +29,30 @@ func NewLogoutLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LogoutLogi
 }
 
 func (l *LogoutLogic) Logout() (resp *types.LogoutResp, err error) {
-	// 获取 Header 中的 Authorization Token (需在 handler 处理传入 context)
-	// 在 go-zero 中，通常可以通过 jwt 中间件后的 context 获取
+	// token 由 handler 从 Authorization 头提取后放入 context。
+	// 拿不到 token 属于业务结果，由响应体告知客户端，不按错误处理。
 	tokenStr, _ := l.ctx.Value("jwtToken").(string)
 	if tokenStr == "" {
 		return &types.LogoutResp{Success: false, Message: "无法获取 Token"}, nil
 	}
 
-	token, _, _ := new(jwt.Parser).ParseUnverified(tokenStr, jwt.MapClaims{})
-	claims := token.Claims.(jwt.MapClaims)
+	// 仅需读取过期时间用于计算黑名单 TTL，因此不校验签名。
+	token, _, err := new(jwt.Parser).ParseUnverified(tokenStr, jwt.MapClaims{})
+	if err != nil {
+		return nil, errcode.ErrUserTokenInvalid.WithDetail(err.Error())
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errcode.ErrUserTokenInvalid
+	}
 	expFloat, ok := claims["exp"].(float64)
 	if !ok {
 		return &types.LogoutResp{Success: false, Message: "Token 缺失过期时间"}, nil
 	}
-	exp := int64(expFloat)
-	ttl := time.Until(time.Unix(exp, 0))
 
-	if ttl > 0 {
-		err = l.svcCtx.Redis.Setex("jwt:revoked:"+tokenStr, "1", int(ttl.Seconds()))
-		if err != nil {
-			return nil, err
+	if ttl := time.Until(time.Unix(int64(expFloat), 0)); ttl > 0 {
+		if err := l.svcCtx.Redis.Setex("jwt:revoked:"+tokenStr, "1", int(ttl.Seconds())); err != nil {
+			return nil, errcode.ErrServiceBusy.WithDetail(err.Error())
 		}
 	}
 

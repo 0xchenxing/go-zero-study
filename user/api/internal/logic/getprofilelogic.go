@@ -3,11 +3,10 @@ package logic
 import (
 	"context"
 	"encoding/json"
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
-
-	"github.com/zeromicro/x/errors"
 )
 
 type GetProfileLogic struct {
@@ -26,17 +25,17 @@ func (l *GetProfileLogic) GetProfile(req *types.ProfileReq) (*types.ProfileResp,
 	// 从上下文读取 JWT Claims
 	userID, ok := l.ctx.Value("userId").(json.Number)
 	if !ok {
-		return nil, errors.New(401, "未认证")
+		return nil, errcode.ErrUserTokenInvalid
 	}
 
 	id, err := userID.Int64()
 	if err != nil {
-		return nil, errors.New(401, "无效的用户 ID")
+		return nil, errcode.ErrUserTokenInvalid
 	}
 
-	// 验证权限（只能查看自己的信息）
+	// 权限校验：只能查看自己的信息
 	if id != req.UserId {
-		return nil, errors.New(401, "无权访问")
+		return nil, errcode.ErrForbidden
 	}
 
 	rpcUser, err := l.svcCtx.UserRpc.QueryUser(
@@ -44,7 +43,8 @@ func (l *GetProfileLogic) GetProfile(req *types.ProfileReq) (*types.ProfileResp,
 		&userclient.QueryUserReq{Id: req.UserId},
 	)
 	if err != nil {
-		return nil, errors.New(401, "用户不存在")
+		// 用户不存在与服务故障要区分开，后者不能被伪装成"用户不存在"。
+		return nil, mapRpcError(err)
 	}
 
 	return &types.ProfileResp{

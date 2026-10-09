@@ -5,14 +5,12 @@ package logic
 
 import (
 	"context"
-	"net/http"
-
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
 )
 
 type CreateUserLogic struct {
@@ -33,7 +31,7 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 // 这里映射成 409 Conflict 的业务错误。
 func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (resp *types.CreateUserResp, err error) {
 	if req.Username == "" || req.Email == "" || req.Password == "" {
-		return nil, errors.New(http.StatusBadRequest, "用户名、邮箱和密码不能为空")
+		return nil, errcode.NewError(errcode.ErrBadRequest.Code, "用户名、邮箱和密码不能为空")
 	}
 
 	rpcResp, err := l.svcCtx.UserRpc.InsertUser(

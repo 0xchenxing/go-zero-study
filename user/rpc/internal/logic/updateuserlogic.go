@@ -45,7 +45,8 @@ func (l *UpdateUserLogic) UpdateUser(in *user.UpdateUserReq) (*user.UpdateUserRe
 	result, err := l.svcCtx.PostgresQuery.User.WithContext(l.ctx).
 		Where(l.svcCtx.PostgresQuery.User.ID.Eq(in.GetId())).Updates(updates)
 	if err != nil {
-		return nil, status.Error(codes.AlreadyExists, "用户名或邮箱已存在")
+		l.Errorf("update user failed: id=%d err=%v", in.GetId(), err)
+		return nil, mapUpdateUserError(err)
 	}
 	if result.RowsAffected == 0 {
 		return nil, status.Error(codes.NotFound, "用户不存在")

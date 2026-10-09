@@ -5,14 +5,12 @@ package logic
 
 import (
 	"context"
-	"net/http"
-
+	"user/api/common/errcode"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 	"user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/x/errors"
 )
 
 type CreateUserWithTodoLogic struct {
@@ -33,7 +31,7 @@ func NewCreateUserWithTodoLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 // 任一步失败整体回滚，接口不会返回只落库一半的数据。
 func (l *CreateUserWithTodoLogic) CreateUserWithTodo(req *types.CreateUserWithTodoReq) (resp *types.CreateUserWithTodoResp, err error) {
 	if req.Username == "" || req.Email == "" || req.Password == "" || req.TodoTitle == "" {
-		return nil, errors.New(http.StatusBadRequest, "用户名、邮箱、密码和待办标题不能为空")
+		return nil, errcode.NewError(errcode.ErrBadRequest.Code, "用户名、邮箱、密码和待办标题不能为空")
 	}
 
 	rpcResp, err := l.svcCtx.UserRpc.CreateUserWithTodo(

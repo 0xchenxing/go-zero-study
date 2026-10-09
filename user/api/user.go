@@ -12,11 +12,7 @@ import (
 	"user/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
-	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
-	"github.com/zeromicro/go-zero/rest/httpx"
-	"github.com/zeromicro/x/errors"
-	xhttp "github.com/zeromicro/x/http"
 )
 
 var configFile = flag.String("f", "api/etc/user-api.yaml", "the config file")
@@ -30,22 +26,9 @@ func main() {
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
+	// 在启动 HTTP 服务器之前注册统一错误处理器
+	handler.RegisterErrorHandler()
 	server.Use(middleware)
-	httpx.SetErrorHandler(func(err error) (int, any) {
-		switch e := err.(type) {
-		case *errors.CodeMsg:
-			return httpStatusFor(e.Code), xhttp.BaseResponse[struct{}]{
-				Code: e.Code,
-				Msg:  e.Msg,
-			}
-		default:
-			logx.Errorf("unhandled error: %+v", err)
-			return http.StatusInternalServerError, xhttp.BaseResponse[struct{}]{
-				Code: 50000,
-				Msg:  "系统繁忙，请稍后重试",
-			}
-		}
-	})
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
@@ -60,14 +43,4 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
 		w.Header().Add("X-Middleware", "static-middleware")
 		next(w, r)
 	}
-}
-
-// httpStatusFor 把业务错误码映射成 HTTP 状态码。
-// 冲突类业务码（409，如账号已存在）需要按 409 Conflict 返回，
-// 其余保持项目原有行为，统一返回 400。
-func httpStatusFor(code int) int {
-	if code == http.StatusConflict {
-		return http.StatusConflict
-	}
-	return http.StatusBadRequest
 }

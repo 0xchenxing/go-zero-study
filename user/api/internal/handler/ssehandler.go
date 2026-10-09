@@ -20,7 +20,7 @@ import (
 func sseHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.SseReq
-		if err := httpx.Parse(r, &req); err != nil {
+		if err := parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}

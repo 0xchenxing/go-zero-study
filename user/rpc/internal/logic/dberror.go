@@ -19,13 +19,31 @@ const (
 func mapCreateUserError(err error) error {
 	switch {
 	case dberr.IsDuplicateKey(err):
-		if dberr.ConstraintName(err) == constraintUsersEmail {
-			return status.Error(codes.AlreadyExists, "邮箱已被占用")
-		}
-		return status.Error(codes.AlreadyExists, "用户名已被占用")
+		return duplicateUserError(err)
 	case dberr.IsForeignKeyViolation(err):
 		return status.Error(codes.FailedPrecondition, "关联数据不存在")
 	default:
 		return status.Error(codes.Internal, "创建失败，请稍后重试")
 	}
+}
+
+// mapUpdateUserError 与 mapCreateUserError 一样区分重复键的具体字段，
+// 但兜底文案换成更新语义，避免把数据库故障误报成"用户名已存在"。
+func mapUpdateUserError(err error) error {
+	switch {
+	case dberr.IsDuplicateKey(err):
+		return duplicateUserError(err)
+	case dberr.IsForeignKeyViolation(err):
+		return status.Error(codes.FailedPrecondition, "关联数据不存在")
+	default:
+		return status.Error(codes.Internal, "更新失败，请稍后重试")
+	}
+}
+
+// duplicateUserError 依据命中的唯一索引名判断是哪个字段被占用。
+func duplicateUserError(err error) error {
+	if dberr.ConstraintName(err) == constraintUsersEmail {
+		return status.Error(codes.AlreadyExists, "邮箱已被占用")
+	}
+	return status.Error(codes.AlreadyExists, "用户名已被占用")
 }
