@@ -50,3 +50,24 @@ func parse(r *http.Request, v any) error {
 func okJson(ctx context.Context, w http.ResponseWriter, data any) {
 	httpx.OkJsonCtx(ctx, w, response.Success(ctx, data))
 }
+
+// UnauthorizedCallback 接管 go-zero 内置 JWT 中间件的未认证响应，使其也走统一信封。
+//
+// go-zero 的 Authorize 中间件是把 401 直接写在 ResponseWriter 上的
+// （rest/handler/authhandler.go 的 unauthorized），压根不经过 httpx.Error，
+// 所以全局错误处理器收不到，客户端只会拿到一个 Content-Length: 0 的 401 ——
+// 这不是 JSON，客户端按信封解析 code 会直接抛异常。
+// 这里改为交回 httpx.ErrorCtx，对外表现为 HTTP 200 + 9003，与其他接口一致。
+//
+// 通过 rest.WithUnauthorizedCallback 注册在 server 上（服务级 RunOption），
+// 对全部 WithJwt 路由组生效。
+func UnauthorizedCallback(w http.ResponseWriter, r *http.Request, err error) {
+	// go-zero 在无可披露原因时传入 nil，此时不附加 Detail，
+	// 否则日志里会出现一条没有内容的 "error detail"。
+	if err == nil {
+		httpx.ErrorCtx(r.Context(), w, errcode.ErrUnauthorized)
+		return
+	}
+
+	httpx.ErrorCtx(r.Context(), w, errcode.ErrUnauthorized.WithDetail(err.Error()))
+}

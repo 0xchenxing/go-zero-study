@@ -47,9 +47,9 @@ if errors.Is(err, errcode.ErrUserNotFound) { ... }
 | --- | --- | --- | --- |
 | 9001 | `ErrInternalServer` | 系统内部错误，请稍后再试 | 未预期的底层错误，兜底码 |
 | 9002 | `ErrBadRequest` | 请求参数错误 | 参数缺失、格式非法、ID 无效 |
-| 9003 | `ErrUnauthorized` | 身份验证失败，请重新登录 | 未认证（预留给需区分认证失败的场景） |
+| 9003 | `ErrUnauthorized` | 身份验证失败，请重新登录 | 未携带 / 格式错 / 签名错 / 已过期的 JWT，由 go-zero 内置 JWT 中间件拒绝 |
 | 9004 | `ErrForbidden` | 权限不足，拒绝访问 | 已登录但无权操作该资源 |
-| 9005 | `ErrNotFound` | 请求的资源不存在 | 通用资源不存在（用户域请用 1002） |
+| 9005 | `ErrNotFound` | 请求的资源不存在 | 通用资源不存在（用户域请用 1002，当前无调用方） |
 | 9006 | `ErrServiceBusy` | 系统繁忙，请稍后再试 | 依赖服务不可用、Redis 写入失败 |
 | 9007 | `ErrTimeout` | 请求处理超时 | RPC 调用超时 |
 | 9008 | `ErrUploadFileType` | 不支持的文件类型 | 文件 MIME 不在白名单内 |
@@ -80,6 +80,13 @@ if errors.Is(err, errcode.ErrUserNotFound) { ... }
 - HTTP 状态码固定为 `200`，业务结果只由 `code` 表达
 - `trace_id` 取不到链路信息时省略该字段
 - 内部细节（SQL、堆栈、gRPC 原始错误）通过 `WithDetail` 附加，只写入日志，不进入响应体
+
+两个已知的**非信封**出口，都是有意的：
+
+- **SSE 端点**（`/sse/with/req`、`/sse/without/resp`）。成功时按 SSE 协议输出
+  `data: {...}` 帧，无法套 JSON 信封；只有参数解析失败才会返回信封。
+- 除此之外全部接口（含 JWT 未认证）都返回信封。JWT 中间件原本会裸写 401
+  且 body 为空，现由 `handler.UnauthorizedCallback` 接管。
 
 ## RPC 边界的错误映射
 

@@ -23,7 +23,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	// WithUnauthorizedCallback 是服务级选项：go-zero 内置的 JWT 中间件默认直接把 401
+	// 裸写在 ResponseWriter 上、不经 httpx.Error，这里接管过来，让它也输出统一信封。
+	server := rest.MustNewServer(c.RestConf,
+		rest.WithUnauthorizedCallback(handler.UnauthorizedCallback))
 	defer server.Stop()
 
 	// 在启动 HTTP 服务器之前注册统一错误处理器
