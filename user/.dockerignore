@@ -1,0 +1,21 @@
+# 构建上下文是仓库根目录，而 Docker 只读 <context>/.dockerignore —— 所以这份必须放在根目录，
+# 放进 deploy/ 之类的子目录是无效的。
+
+.git
+.idea
+**/*.md
+
+# .go 是 E-SafeNet 密文：镜像只需宿主机编译好的二进制，源码一律不进构建上下文，
+# 从结构上保证密文不会被打进镜像。
+**/*.go
+go.mod
+go.sum
+
+# 运行期产物
+api/uploads
+
+# 开发用配置（含 127.0.0.1 和密钥）；镜像只用同目录的 *.docker.yaml
+api/etc/user-api.yaml
+rpc/etc/user.yaml
+
+docker-compose.yml

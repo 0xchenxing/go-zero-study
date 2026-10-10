@@ -1,0 +1,53 @@
+# Docker 专用配置。与同目录的 user.yaml 的差异：
+#   Etcd.Hosts            127.0.0.1:2379 -> etcd:2379
+#   UserRedis.Host        127.0.0.1:6379 -> redis:6379
+#   Kq*Conf.Brokers       127.0.0.1:29092 -> kafka:9092    （29092 广播的是 localhost:29092，
+#                         容器内解析不到，必须走 INTERNAL 监听器）
+#   KqConsumerConf.Group  kqConsumer -> kqConsumer-docker   （避免和宿主机 go run 的 RPC
+#                         落到同一消费组，单分区下后加入的那个收不到消息）
+#   PostgresDSN           host=127.0.0.1 -> host=postgres
+# 另外新增了 Telemetry 段：原配置没有，不加的话 RPC 的 span 不会上报，Jaeger 里只有半条链路。
+Name: user.rpc
+ListenOn: 0.0.0.0:8080
+Mode: dev
+Telemetry:
+  Name: user.rpc
+  Endpoint: jaeger:4317
+  Batcher: otlpgrpc
+  Sampler: 1.0
+Etcd:
+  Hosts:
+    - etcd:2379
+  Key: user.rpc
+#DB:
+#  DataSource: "root:123456@tcp(127.0.0.1:3306)/user_db?parseTime=true&loc=UTC"  # 主库地址
+#  DriverName: mysql
+#  Policy: "round-robin"  # 负载均衡策略：round-robin(轮询) 或 random(随机)
+#  Replicas:
+#    - "root:123456@tcp(127.0.0.1:3306)/user_db?parseTime=true&loc=UTC"  # 从库1
+#    - "root:123456@tcp(127.0.0.1:3306)/user_db?parseTime=true&loc=UTC"  # 从库2
+#CacheRedis:
+#  - Host: 127.0.0.1:6379
+#    Type: node
+#    Pass: ""
+#Mongo:
+#  Uri: "mongodb://127.0.0.1:27017"
+#  Database: article_db
+UserRedis:
+  Host: redis:6379
+  Pass: ""
+  Type: node        # node=单机 | cluster=集群
+KqPusherConf:
+  Brokers:
+    - kafka:9092
+  Topic: payment-success
+KqConsumerConf:
+  Name: kqConsumer
+  Brokers:
+    - kafka:9092
+  Group: kqConsumer-docker
+  Topic: payment-success
+  Offset: first
+  Consumers: 8
+  Processors: 8
+PostgresDSN: "host=postgres user=devuser password=devpass dbname=appdb port=5432 sslmode=disable TimeZone=Asia/Shanghai"

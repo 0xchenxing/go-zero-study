@@ -1,0 +1,44 @@
+# Docker 专用配置。与同目录的 user-api.yaml 只差下面 4 处，方便直接 diff：
+#   Telemetry.Endpoint   localhost:4317 -> jaeger:4317    （容器里没有宿主机那个 collector）
+#   UserRpc.Etcd.Hosts   127.0.0.1:2379 -> etcd:2379      （走 compose 服务名）
+#   Redis.Host           127.0.0.1:6379 -> redis:6379
+#   UploadDir            ./api/uploads  -> /app/uploads   （由 uploads-data 命名卷挂载）
+Name: user-api
+Host: 0.0.0.0
+Port: 8888
+Middlewares:
+  Metrics: true
+  Trace: true
+  Prometheus: true
+Telemetry:
+  Name: user
+  Endpoint: jaeger:4317
+  Batcher: otlpgrpc
+  Sampler: 1.0
+Prometheus:
+  Host: 0.0.0.0      # 监听地址，本地调试用 127.0.0.1，生产环境建议 0.0.0.0
+  Port: 9091         # 暴露指标的端口，不和主端口 8888 冲突
+  Path: /metrics     # 指标路径，默认就是 /metrics
+
+UserRpc:
+    Etcd:
+      Hosts:
+        - etcd:2379
+      Key: user.rpc
+#  Endpoints:
+#    - 127.0.0.1:8080
+
+Auth:
+  AccessSecret: "your-256-bit-secret-key-must-be-32-bytes"
+  AccessExpire: 86400  # 24小时
+  RefreshSecret: "another-random-secret-key-for-refresh"
+  RefreshExpire: 604800  # 7天
+
+# Redis 配置（用于黑名单）
+Redis:
+  Host: "redis:6379"
+  Pass: ""
+  DB: 0
+
+MaxBytes: 67108864   # 请求体最大 64 MB
+UploadDir: /app/uploads
